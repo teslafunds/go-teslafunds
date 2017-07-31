@@ -1,25 +1,46 @@
+<<<<<<< HEAD
 // Copyright 2015 The go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2015 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 package trie
 
 import (
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/logger"
 	"github.com/teslafunds/go-teslafunds/logger/glog"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 var secureKeyPrefix = []byte("secure-key-")
@@ -49,8 +70,12 @@ type SecureTrie struct {
 // If root is the zero hash or the sha3 hash of an empty string, the
 // trie is initially empty. Otherwise, New will panic if db is nil
 // and returns MissingNodeError if the root node cannot be found.
+//
 // Accessing the trie loads nodes from db on demand.
-func NewSecure(root common.Hash, db Database) (*SecureTrie, error) {
+// Loaded nodes are kept around until their 'cache generation' expires.
+// A new cache generation is created by each call to Commit.
+// cachelimit sets the number of past cache generations to keep.
+func NewSecure(root common.Hash, db Database, cachelimit uint16) (*SecureTrie, error) {
 	if db == nil {
 		panic("NewSecure called with nil database")
 	}
@@ -58,9 +83,8 @@ func NewSecure(root common.Hash, db Database) (*SecureTrie, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &SecureTrie{
-		trie: *trie,
-	}, nil
+	trie.SetCacheLimit(cachelimit)
+	return &SecureTrie{trie: *trie}, nil
 }
 
 // Get returns the value for key stored in the trie.
@@ -191,7 +215,7 @@ func (t *SecureTrie) secKey(key []byte) []byte {
 // The caller must not hold onto the return value because it will become
 // invalid on the next call to hashKey or secKey.
 func (t *SecureTrie) hashKey(key []byte) []byte {
-	h := newHasher()
+	h := newHasher(0, 0)
 	h.sha.Reset()
 	h.sha.Write(key)
 	buf := h.sha.Sum(t.hashKeyBuf[:0])

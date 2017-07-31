@@ -21,7 +21,11 @@ import (
 	"reflect"
 	"strings"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/crypto"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/crypto"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // Callable method given a `Name` and whether the method is a constant.

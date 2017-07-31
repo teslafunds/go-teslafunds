@@ -39,7 +39,11 @@ func tmpdir(t *testing.T) string {
 	return dir
 }
 
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 type testgtsf struct {
+=======
+type testgeth struct {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	// For total convenience, all testing methods are available.
 	*testing.T
 	// template variables for expect
@@ -56,7 +60,11 @@ type testgtsf struct {
 }
 
 func init() {
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 	// Run the app if we're the child process for runGtsf.
+=======
+	// Run the app if we're the child process for runGeth.
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	if os.Getenv("GETH_TEST_CHILD") != "" {
 		if err := app.Run(os.Args); err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -68,8 +76,13 @@ func init() {
 
 // spawns gtsf with the given command line args. If the args don't set --datadir, the
 // child g gets a temporary data directory.
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func runGtsf(t *testing.T, args ...string) *testgtsf {
 	tt := &testgtsf{T: t, Executable: os.Args[0]}
+=======
+func runGeth(t *testing.T, args ...string) *testgeth {
+	tt := &testgeth{T: t, Executable: os.Args[0]}
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	for i, arg := range args {
 		switch {
 		case arg == "-datadir" || arg == "--datadir":
@@ -117,13 +130,22 @@ func runGtsf(t *testing.T, args ...string) *testgtsf {
 // InputLine writes the given text to the childs stdin.
 // This method can also be called from an expect template, e.g.:
 //
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 //     gtsf.expect(`Passphrase: {{.InputLine "password"}}`)
 func (tt *testgtsf) InputLine(s string) string {
+=======
+//     gdbix.expect(`Passphrase: {{.InputLine "password"}}`)
+func (tt *testgeth) InputLine(s string) string {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	io.WriteString(tt.stdin, s+"\n")
 	return ""
 }
 
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) setTemplateFunc(name string, fn interface{}) {
+=======
+func (tt *testgeth) setTemplateFunc(name string, fn interface{}) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	if tt.Func == nil {
 		tt.Func = make(map[string]interface{})
 	}
@@ -135,7 +157,11 @@ func (tt *testgtsf) setTemplateFunc(name string, fn interface{}) {
 //
 // If the template starts with a newline, the newline is removed
 // before matching.
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) expect(tplsource string) {
+=======
+func (tt *testgeth) expect(tplsource string) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	// Generate the expected output by running the template.
 	tpl := template.Must(template.New("").Funcs(tt.Func).Parse(tplsource))
 	wantbuf := new(bytes.Buffer)
@@ -151,7 +177,11 @@ func (tt *testgtsf) expect(tplsource string) {
 	tt.Logf("Matched stdout text:\n%s", want)
 }
 
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) matchExactOutput(want []byte) error {
+=======
+func (tt *testgeth) matchExactOutput(want []byte) error {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	buf := make([]byte, len(want))
 	n := 0
 	tt.withKillTimeout(func() { n, _ = io.ReadFull(tt.stdout, buf) })
@@ -182,7 +212,11 @@ func (tt *testgtsf) matchExactOutput(want []byte) error {
 // Note that an arbitrary amount of output may be consumed by the
 // regular expression. This usually means that expect cannot be used
 // after expectRegexp.
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) expectRegexp(resource string) (*regexp.Regexp, []string) {
+=======
+func (tt *testgeth) expectRegexp(resource string) (*regexp.Regexp, []string) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	var (
 		re      = regexp.MustCompile(resource)
 		rtee    = &runeTee{in: tt.stdout}
@@ -205,7 +239,11 @@ func (tt *testgtsf) expectRegexp(resource string) (*regexp.Regexp, []string) {
 
 // expectExit expects the child process to exit within 5s without
 // printing any additional text on stdout.
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) expectExit() {
+=======
+func (tt *testgeth) expectExit() {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	var output []byte
 	tt.withKillTimeout(func() {
 		output, _ = ioutil.ReadAll(tt.stdout)
@@ -219,20 +257,32 @@ func (tt *testgtsf) expectExit() {
 	}
 }
 
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) interrupt() {
+=======
+func (tt *testgeth) interrupt() {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	tt.cmd.Process.Signal(os.Interrupt)
 }
 
 // stderrText returns any stderr output written so far.
 // The returned text holds all log lines after expectExit has
 // returned.
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) stderrText() string {
+=======
+func (tt *testgeth) stderrText() string {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	tt.stderr.mu.Lock()
 	defer tt.stderr.mu.Unlock()
 	return tt.stderr.buf.String()
 }
 
+<<<<<<< HEAD:cmd/gtsf/run_test.go
 func (tt *testgtsf) withKillTimeout(fn func()) {
+=======
+func (tt *testgeth) withKillTimeout(fn func()) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/run_test.go
 	timeout := time.AfterFunc(5*time.Second, func() {
 		tt.Log("killing the child process (timeout)")
 		tt.cmd.Process.Kill()

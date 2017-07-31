@@ -19,7 +19,11 @@ package trie
 import (
 	"fmt"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // MissingNodeError is returned by the trie functions (TryGet, TryUpdate, TryDelete)

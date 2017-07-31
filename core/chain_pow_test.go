@@ -22,10 +22,18 @@ import (
 	"testing"
 	"time"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/ethdb"
 	"github.com/teslafunds/go-teslafunds/pow"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/dbixdb"
+	"github.com/dubaicoin-dbix/go-dubaicoin/params"
+	"github.com/dubaicoin-dbix/go-dubaicoin/pow"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // failPow is a non-validating proof of work implementation, that returns true
@@ -60,7 +68,7 @@ func TestPowVerification(t *testing.T) {
 	var (
 		testdb, _ = ethdb.NewMemDatabase()
 		genesis   = GenesisBlockForTesting(testdb, common.Address{}, new(big.Int))
-		blocks, _ = GenerateChain(nil, genesis, testdb, 8, nil)
+		blocks, _ = GenerateChain(params.TestChainConfig, genesis, testdb, 8, nil)
 	)
 	headers := make([]*types.Header, len(blocks))
 	for i, block := range blocks {
@@ -115,7 +123,7 @@ func testPowConcurrentVerification(t *testing.T, threads int) {
 	var (
 		testdb, _ = ethdb.NewMemDatabase()
 		genesis   = GenesisBlockForTesting(testdb, common.Address{}, new(big.Int))
-		blocks, _ = GenerateChain(nil, genesis, testdb, 8, nil)
+		blocks, _ = GenerateChain(params.TestChainConfig, genesis, testdb, 8, nil)
 	)
 	headers := make([]*types.Header, len(blocks))
 	for i, block := range blocks {
@@ -186,7 +194,7 @@ func testPowConcurrentAbortion(t *testing.T, threads int) {
 	var (
 		testdb, _ = ethdb.NewMemDatabase()
 		genesis   = GenesisBlockForTesting(testdb, common.Address{}, new(big.Int))
-		blocks, _ = GenerateChain(nil, genesis, testdb, 1024, nil)
+		blocks, _ = GenerateChain(params.TestChainConfig, genesis, testdb, 1024, nil)
 	)
 	headers := make([]*types.Header, len(blocks))
 	for i, block := range blocks {

@@ -20,8 +20,13 @@ import (
 	"fmt"
 	"math/big"
 
+<<<<<<< HEAD:tsf/downloader/types.go
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core/types"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/downloader/types.go
 )
 
 // headerCheckFn is a callback type for verifying a header's presence in the local chain.

@@ -42,7 +42,11 @@ import (
 	"fmt"
 	"hash"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/crypto/secp256k1"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/crypto/secp256k1"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 var (

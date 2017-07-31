@@ -1,29 +1,45 @@
+<<<<<<< HEAD
 // Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
 // This file is part of go-teslafunds.
 //
 // go-teslafunds is free software: you can redistribute it and/or modify
+=======
+// Copyright 2014 The go-ethereum Authors
+// This file is part of go-ethereum.
+//
+// go-ethereum is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // go-teslafunds is distributed in the hope that it will be useful,
+=======
+// go-ethereum is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
+<<<<<<< HEAD
 // along with go-teslafunds. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 // evm executes EVM code snippets.
 package main
 
 import (
 	"fmt"
-	"math/big"
+	"io/ioutil"
 	"os"
-	"runtime"
+	goruntime "runtime"
 	"time"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/cmd/utils"
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core"
@@ -33,26 +49,35 @@ import (
 	"github.com/teslafunds/go-teslafunds/crypto"
 	"github.com/teslafunds/go-teslafunds/ethdb"
 	"github.com/teslafunds/go-teslafunds/logger/glog"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/cmd/utils"
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/state"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/vm"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/vm/runtime"
+	"github.com/dubaicoin-dbix/go-dubaicoin/crypto"
+	"github.com/dubaicoin-dbix/go-dubaicoin/dbixdb"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 	"gopkg.in/urfave/cli.v1"
 )
 
+var gitCommit = "" // Git SHA1 commit hash of the release (set via linker flags)
+
 var (
-	app       *cli.App
+	app = utils.NewApp(gitCommit, "the evm command line interface")
+
 	DebugFlag = cli.BoolFlag{
 		Name:  "debug",
 		Usage: "output full trace logs",
 	}
-	ForceJitFlag = cli.BoolFlag{
-		Name:  "forcejit",
-		Usage: "forces jit compilation",
-	}
-	DisableJitFlag = cli.BoolFlag{
-		Name:  "nojit",
-		Usage: "disabled jit compilation",
-	}
 	CodeFlag = cli.StringFlag{
 		Name:  "code",
 		Usage: "EVM code",
+	}
+	CodeFileFlag = cli.StringFlag{
+		Name:  "codefile",
+		Usage: "file containing EVM code",
 	}
 	GasFlag = cli.StringFlag{
 		Name:  "gas",
@@ -89,23 +114,26 @@ var (
 		Name:  "create",
 		Usage: "indicates the action should be create rather than call",
 	}
+	DisableGasMeteringFlag = cli.BoolFlag{
+		Name:  "nogasmetering",
+		Usage: "disable gas metering",
+	}
 )
 
 func init() {
-	app = utils.NewApp("0.2", "the evm command line interface")
 	app.Flags = []cli.Flag{
 		CreateFlag,
 		DebugFlag,
 		VerbosityFlag,
-		ForceJitFlag,
-		DisableJitFlag,
 		SysStatFlag,
 		CodeFlag,
+		CodeFileFlag,
 		GasFlag,
 		PriceFlag,
 		ValueFlag,
 		DumpFlag,
 		InputFlag,
+		DisableGasMeteringFlag,
 	}
 	app.Action = run
 }
@@ -119,6 +147,7 @@ func run(ctx *cli.Context) error {
 	sender := statedb.CreateAccount(common.StringToAddress("sender"))
 
 	logger := vm.NewStructLogger(nil)
+<<<<<<< HEAD
 
 	vmenv := NewEnv(statedb, common.StringToAddress("evmuser"), common.Big(ctx.GlobalString(ValueFlag.Name)), vm.Config{
 		Debug:     ctx.GlobalBool(DebugFlag.Name),
@@ -126,48 +155,81 @@ func run(ctx *cli.Context) error {
 		EnableJit: !ctx.GlobalBool(DisableJitFlag.Name),
 		Tracer:    logger,
 	})
+=======
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 	tstart := time.Now()
 
 	var (
-		ret []byte
-		err error
+		code []byte
+		ret  []byte
+		err  error
 	)
 
+	if ctx.GlobalString(CodeFlag.Name) != "" {
+		code = common.Hex2Bytes(ctx.GlobalString(CodeFlag.Name))
+	} else {
+		var hexcode []byte
+		if ctx.GlobalString(CodeFileFlag.Name) != "" {
+			var err error
+			hexcode, err = ioutil.ReadFile(ctx.GlobalString(CodeFileFlag.Name))
+			if err != nil {
+				fmt.Printf("Could not load code from file: %v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			var err error
+			hexcode, err = ioutil.ReadAll(os.Stdin)
+			if err != nil {
+				fmt.Printf("Could not load code from stdin: %v\n", err)
+				os.Exit(1)
+			}
+		}
+		code = common.Hex2Bytes(string(hexcode[:]))
+	}
+
 	if ctx.GlobalBool(CreateFlag.Name) {
-		input := append(common.Hex2Bytes(ctx.GlobalString(CodeFlag.Name)), common.Hex2Bytes(ctx.GlobalString(InputFlag.Name))...)
-		ret, _, err = vmenv.Create(
-			sender,
-			input,
-			common.Big(ctx.GlobalString(GasFlag.Name)),
-			common.Big(ctx.GlobalString(PriceFlag.Name)),
-			common.Big(ctx.GlobalString(ValueFlag.Name)),
-		)
+		input := append(code, common.Hex2Bytes(ctx.GlobalString(InputFlag.Name))...)
+		ret, _, err = runtime.Create(input, &runtime.Config{
+			Origin:   sender.Address(),
+			State:    statedb,
+			GasLimit: common.Big(ctx.GlobalString(GasFlag.Name)),
+			GasPrice: common.Big(ctx.GlobalString(PriceFlag.Name)),
+			Value:    common.Big(ctx.GlobalString(ValueFlag.Name)),
+			EVMConfig: vm.Config{
+				Tracer:             logger,
+				Debug:              ctx.GlobalBool(DebugFlag.Name),
+				DisableGasMetering: ctx.GlobalBool(DisableGasMeteringFlag.Name),
+			},
+		})
 	} else {
 		receiver := statedb.CreateAccount(common.StringToAddress("receiver"))
-
-		code := common.Hex2Bytes(ctx.GlobalString(CodeFlag.Name))
 		receiver.SetCode(crypto.Keccak256Hash(code), code)
-		ret, err = vmenv.Call(
-			sender,
-			receiver.Address(),
-			common.Hex2Bytes(ctx.GlobalString(InputFlag.Name)),
-			common.Big(ctx.GlobalString(GasFlag.Name)),
-			common.Big(ctx.GlobalString(PriceFlag.Name)),
-			common.Big(ctx.GlobalString(ValueFlag.Name)),
-		)
+
+		ret, err = runtime.Call(receiver.Address(), common.Hex2Bytes(ctx.GlobalString(InputFlag.Name)), &runtime.Config{
+			Origin:   sender.Address(),
+			State:    statedb,
+			GasLimit: common.Big(ctx.GlobalString(GasFlag.Name)),
+			GasPrice: common.Big(ctx.GlobalString(PriceFlag.Name)),
+			Value:    common.Big(ctx.GlobalString(ValueFlag.Name)),
+			EVMConfig: vm.Config{
+				Tracer:             logger,
+				Debug:              ctx.GlobalBool(DebugFlag.Name),
+				DisableGasMetering: ctx.GlobalBool(DisableGasMeteringFlag.Name),
+			},
+		})
 	}
 	vmdone := time.Since(tstart)
 
 	if ctx.GlobalBool(DumpFlag.Name) {
-		statedb.Commit()
+		statedb.Commit(true)
 		fmt.Println(string(statedb.Dump()))
 	}
 	vm.StdErrFormat(logger.StructLogs())
 
 	if ctx.GlobalBool(SysStatFlag.Name) {
-		var mem runtime.MemStats
-		runtime.ReadMemStats(&mem)
+		var mem goruntime.MemStats
+		goruntime.ReadMemStats(&mem)
 		fmt.Printf("vm took %v\n", vmdone)
 		fmt.Printf(`alloc:      %d
 tot alloc:  %d
@@ -192,6 +254,7 @@ func main() {
 		os.Exit(1)
 	}
 }
+<<<<<<< HEAD
 
 type VMEnv struct {
 	state *state.StateDB
@@ -275,3 +338,5 @@ func (self *VMEnv) DelegateCall(caller vm.ContractRef, addr common.Address, data
 func (self *VMEnv) Create(caller vm.ContractRef, data []byte, gas, price, value *big.Int) ([]byte, common.Address, error) {
 	return core.Create(self, caller, data, gas, price, value)
 }
+=======
+>>>>>>> 7fdd714... gdbix-update v1.5.0

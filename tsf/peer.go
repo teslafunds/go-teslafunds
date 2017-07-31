@@ -1,20 +1,37 @@
+<<<<<<< HEAD:tsf/peer.go
 // Copyright 2015 The go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2015 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/peer.go
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD:tsf/peer.go
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/peer.go
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD:tsf/peer.go
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
 
 package tsf
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+
+package eth
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/peer.go
 
 import (
 	"errors"
@@ -23,12 +40,21 @@ import (
 	"sync"
 	"time"
 
+<<<<<<< HEAD:tsf/peer.go
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/logger"
 	"github.com/teslafunds/go-teslafunds/logger/glog"
 	"github.com/teslafunds/go-teslafunds/p2p"
 	"github.com/teslafunds/go-teslafunds/rlp"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rlp"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/peer.go
 	"gopkg.in/fatih/set.v0"
 )
 
@@ -230,7 +256,7 @@ func (p *peer) RequestReceipts(hashes []common.Hash) error {
 	return p2p.Send(p.rw, GetReceiptsMsg, hashes)
 }
 
-// Handshake executes the eth protocol handshake, negotiating version number,
+// Handshake executes the dbix protocol handshake, negotiating version number,
 // network IDs, difficulties, head and genesis blocks.
 func (p *peer) Handshake(network int, td *big.Int, head common.Hash, genesis common.Hash) error {
 	// Send out own handshake in a new thread
@@ -295,7 +321,11 @@ func (p *peer) readStatus(network int, status *statusData, genesis common.Hash) 
 // String implements fmt.Stringer.
 func (p *peer) String() string {
 	return fmt.Sprintf("Peer %s [%s]", p.id,
+<<<<<<< HEAD:tsf/peer.go
 		fmt.Sprintf("tsf/%2d", p.version),
+=======
+		fmt.Sprintf("eth/%2d", p.version),
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/peer.go
 	)
 }
 

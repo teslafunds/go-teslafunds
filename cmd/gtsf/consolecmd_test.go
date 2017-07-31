@@ -28,7 +28,12 @@ import (
 	"testing"
 	"time"
 
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 	"github.com/teslafunds/go-teslafunds/rpc"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/params"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rpc"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 )
 
 // Tests that a node embedded within a console can be started up properly and
@@ -36,18 +41,31 @@ import (
 func TestConsoleWelcome(t *testing.T) {
 	coinbase := "0x8605cdbbdb6d264aa742e77020dcbc58fcdce182"
 
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 	// Start a gtsf console, make sure it's cleaned up and terminate the console
 	gtsf := runGtsf(t,
+=======
+	// Start a gdbix console, make sure it's cleaned up and terminate the console
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 		"--port", "0", "--maxpeers", "0", "--nodiscover", "--nat", "none",
 		"--etherbase", coinbase, "--shh",
 		"console")
 
 	// Gather all the infos the welcome message needs to contain
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 	gtsf.setTemplateFunc("goos", func() string { return runtime.GOOS })
 	gtsf.setTemplateFunc("gover", runtime.Version)
 	gtsf.setTemplateFunc("gtsfver", func() string { return verString })
 	gtsf.setTemplateFunc("niltime", func() string { return time.Unix(0, 0).Format(time.RFC1123) })
 	gtsf.setTemplateFunc("apis", func() []string {
+=======
+	gdbix.setTemplateFunc("goos", func() string { return runtime.GOOS })
+	gdbix.setTemplateFunc("gover", runtime.Version)
+	gdbix.setTemplateFunc("gethver", func() string { return params.Version })
+	gdbix.setTemplateFunc("niltime", func() string { return time.Unix(0, 0).Format(time.RFC1123) })
+	gdbix.setTemplateFunc("apis", func() []string {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 		apis := append(strings.Split(rpc.DefaultIPCApis, ","), rpc.MetadataApi)
 		sort.Strings(apis)
 		return apis
@@ -57,7 +75,11 @@ func TestConsoleWelcome(t *testing.T) {
 	gtsf.expect(`
 Welcome to the Gtsf JavaScript console!
 
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 instance: Gtsf/v{{gtsfver}}/{{goos}}/{{gover}}
+=======
+instance: Gdbix/v{{gethver}}/{{goos}}/{{gover}}
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 coinbase: {{.Etherbase}}
 at block: 0 ({{niltime}})
  datadir: {{.Datadir}}
@@ -82,7 +104,11 @@ func TestIPCAttachWelcome(t *testing.T) {
 	}
 	// Note: we need --shh because testAttachWelcome checks for default
 	// list of ipc modules and shh is included there.
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 		"--port", "0", "--maxpeers", "0", "--nodiscover", "--nat", "none",
 		"--etherbase", coinbase, "--shh", "--ipcpath", ipc)
 
@@ -95,9 +121,12 @@ func TestIPCAttachWelcome(t *testing.T) {
 
 func TestHTTPAttachWelcome(t *testing.T) {
 	coinbase := "0x8605cdbbdb6d264aa742e77020dcbc58fcdce182"
-
 	port := strconv.Itoa(trulyRandInt(1024, 65536)) // Yeah, sometimes this will fail, sorry :P
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 		"--port", "0", "--maxpeers", "0", "--nodiscover", "--nat", "none",
 		"--etherbase", coinbase, "--rpc", "--rpcport", port)
 
@@ -112,7 +141,11 @@ func TestWSAttachWelcome(t *testing.T) {
 	coinbase := "0x8605cdbbdb6d264aa742e77020dcbc58fcdce182"
 	port := strconv.Itoa(trulyRandInt(1024, 65536)) // Yeah, sometimes this will fail, sorry :P
 
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 		"--port", "0", "--maxpeers", "0", "--nodiscover", "--nat", "none",
 		"--etherbase", coinbase, "--ws", "--wsport", port)
 
@@ -123,17 +156,28 @@ func TestWSAttachWelcome(t *testing.T) {
 	gtsf.expectExit()
 }
 
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 func testAttachWelcome(t *testing.T, gtsf *testgtsf, endpoint string) {
 	// Attach to a running gtsf note and terminate immediately
 	attach := runGtsf(t, "attach", endpoint)
+=======
+func testAttachWelcome(t *testing.T, gdbix *testgeth, endpoint string) {
+	// Attach to a running gdbix note and terminate immediately
+	attach := runGeth(t, "attach", endpoint)
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 	defer attach.expectExit()
 	attach.stdin.Close()
 
 	// Gather all the infos the welcome message needs to contain
 	attach.setTemplateFunc("goos", func() string { return runtime.GOOS })
 	attach.setTemplateFunc("gover", runtime.Version)
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 	attach.setTemplateFunc("gtsfver", func() string { return verString })
 	attach.setTemplateFunc("etherbase", func() string { return gtsf.Etherbase })
+=======
+	attach.setTemplateFunc("gethver", func() string { return params.Version })
+	attach.setTemplateFunc("etherbase", func() string { return gdbix.Etherbase })
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 	attach.setTemplateFunc("niltime", func() string { return time.Unix(0, 0).Format(time.RFC1123) })
 	attach.setTemplateFunc("ipc", func() bool { return strings.HasPrefix(endpoint, "ipc") })
 	attach.setTemplateFunc("datadir", func() string { return gtsf.Datadir })
@@ -152,7 +196,11 @@ func testAttachWelcome(t *testing.T, gtsf *testgtsf, endpoint string) {
 	attach.expect(`
 Welcome to the Gtsf JavaScript console!
 
+<<<<<<< HEAD:cmd/gtsf/consolecmd_test.go
 instance: Gtsf/v{{gtsfver}}/{{goos}}/{{gover}}
+=======
+instance: Gdbix/v{{gethver}}/{{goos}}/{{gover}}
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/consolecmd_test.go
 coinbase: {{etherbase}}
 at block: 0 ({{niltime}}){{if ipc}}
  datadir: {{datadir}}{{end}}

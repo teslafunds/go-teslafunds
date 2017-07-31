@@ -1,18 +1,33 @@
+<<<<<<< HEAD
 // Copyright 2015 The go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2015 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 package vm
 
@@ -22,7 +37,11 @@ import (
 	"os"
 	"unicode"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 type Storage map[common.Hash]common.Hash
@@ -36,16 +55,23 @@ func (self Storage) Copy() Storage {
 	return cpy
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // LogConfig are the configuration options for structured logger the EVM
 type LogConfig struct {
 	DisableMemory  bool // disable memory capture
 	DisableStack   bool // disable stack capture
 	DisableStorage bool // disable storage capture
 	FullStorage    bool // show full storage (slow)
+<<<<<<< HEAD
+=======
+	Limit          int  // maximum length of output, but zero means unlimited
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 }
 
-// StructLog is emitted to the Environment each cycle and lists information about the current internal state
+// StructLog is emitted to the EVM each cycle and lists information about the current internal state
 // prior to the execution of the statement.
 type StructLog struct {
 	Pc      uint64
@@ -65,12 +91,16 @@ type StructLog struct {
 // Note that reference types are actual VM data structures; make copies
 // if you need to retain them beyond the current call.
 type Tracer interface {
+<<<<<<< HEAD
 	CaptureState(env Environment, pc uint64, op OpCode, gas, cost *big.Int, memory *Memory, stack *Stack, contract *Contract, depth int, err error)
+=======
+	CaptureState(env *EVM, pc uint64, op OpCode, gas, cost *big.Int, memory *Memory, stack *Stack, contract *Contract, depth int, err error) error
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 }
 
 // StructLogger is an EVM state logger and implements Tracer.
 //
-// Logger can capture state based on the given Log configuration and also keeps
+// StructLogger can capture state based on the given Log configuration and also keeps
 // a track record of modified storage which is used in reporting snapshots of the
 // contract their storage.
 type StructLogger struct {
@@ -94,7 +124,15 @@ func NewStructLogger(cfg *LogConfig) *StructLogger {
 // captureState logs a new structured log message and pushes it out to the environment
 //
 // captureState also tracks SSTORE ops to track dirty values.
+<<<<<<< HEAD
 func (l *StructLogger) CaptureState(env Environment, pc uint64, op OpCode, gas, cost *big.Int, memory *Memory, stack *Stack, contract *Contract, depth int, err error) {
+=======
+func (l *StructLogger) CaptureState(env *EVM, pc uint64, op OpCode, gas, cost *big.Int, memory *Memory, stack *Stack, contract *Contract, depth int, err error) error {
+	// check if already accumulated the specified number of logs
+	if l.cfg.Limit != 0 && l.cfg.Limit <= len(l.logs) {
+		return ErrTraceLimitReached
+	}
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 	// initialise new changed values storage container for this contract
 	// if not present.
@@ -140,7 +178,11 @@ func (l *StructLogger) CaptureState(env Environment, pc uint64, op OpCode, gas, 
 			storage = make(Storage)
 			// Get the contract account and loop over each storage entry. This may involve looping over
 			// the trie and is a very expensive process.
+<<<<<<< HEAD
 			env.Db().GetAccount(contract.Address()).ForEachStorage(func(key, value common.Hash) bool {
+=======
+			env.StateDB.GetAccount(contract.Address()).ForEachStorage(func(key, value common.Hash) bool {
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 				storage[key] = value
 				// Return true, indicating we'd like to continue.
 				return true
@@ -151,9 +193,16 @@ func (l *StructLogger) CaptureState(env Environment, pc uint64, op OpCode, gas, 
 		}
 	}
 	// create a new snaptshot of the EVM.
+<<<<<<< HEAD
 	log := StructLog{pc, op, new(big.Int).Set(gas), cost, mem, stck, storage, env.Depth(), err}
 
 	l.logs = append(l.logs, log)
+=======
+	log := StructLog{pc, op, new(big.Int).Set(gas), cost, mem, stck, storage, env.depth, err}
+
+	l.logs = append(l.logs, log)
+	return nil
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 }
 
 // StructLogs returns a list of captured log entries

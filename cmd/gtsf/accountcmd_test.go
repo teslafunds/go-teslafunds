@@ -43,14 +43,24 @@ func tmpDatadirWithKeystore(t *testing.T) string {
 }
 
 func TestAccountListEmpty(t *testing.T) {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t, "account")
 	gtsf.expectExit()
+=======
+	gdbix := runGeth(t, "account")
+	gdbix.expectExit()
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 }
 
 func TestAccountList(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t, "--datadir", datadir, "account")
 	defer gtsf.expectExit()
+=======
+	gdbix := runGeth(t, "--datadir", datadir, "account")
+	defer gdbix.expectExit()
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 	if runtime.GOOS == "windows" {
 		gtsf.expect(`
 Account #0: {7ef5a6135f1fd6a02593eedc869c6d41d934aef8} {{.Datadir}}\keystore\UTC--2016-03-22T12-57-55.920751759Z--7ef5a6135f1fd6a02593eedc869c6d41d934aef8
@@ -67,9 +77,15 @@ Account #2: {289d485d9771714cce91d3393d764e1311907acc} {{.Datadir}}/keystore/zzz
 }
 
 func TestAccountNew(t *testing.T) {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t, "--lightkdf", "account", "new")
 	defer gtsf.expectExit()
 	gtsf.expect(`
+=======
+	gdbix := runGeth(t, "--lightkdf", "account", "new")
+	defer gdbix.expectExit()
+	gdbix.expect(`
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 Your new account is locked with a password. Please give a password. Do not forget this password.
 !! Unsupported terminal, password will be echoed.
 Passphrase: {{.InputLine "foobar"}}
@@ -79,9 +95,15 @@ Repeat passphrase: {{.InputLine "foobar"}}
 }
 
 func TestAccountNewBadRepeat(t *testing.T) {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t, "--lightkdf", "account", "new")
 	defer gtsf.expectExit()
 	gtsf.expect(`
+=======
+	gdbix := runGeth(t, "--lightkdf", "account", "new")
+	defer gdbix.expectExit()
+	gdbix.expect(`
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 Your new account is locked with a password. Please give a password. Do not forget this password.
 !! Unsupported terminal, password will be echoed.
 Passphrase: {{.InputLine "something"}}
@@ -92,7 +114,11 @@ Fatal: Passphrases do not match
 
 func TestAccountUpdate(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--datadir", datadir, "--lightkdf",
 		"account", "update", "f466859ead1932d743d622cb74fc058882e8648a")
 	defer gtsf.expectExit()
@@ -107,9 +133,15 @@ Repeat passphrase: {{.InputLine "foobar2"}}
 }
 
 func TestWalletImport(t *testing.T) {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t, "--lightkdf", "wallet", "import", "testdata/guswallet.json")
 	defer gtsf.expectExit()
 	gtsf.expect(`
+=======
+	gdbix := runGeth(t, "--lightkdf", "wallet", "import", "testdata/guswallet.json")
+	defer gdbix.expectExit()
+	gdbix.expect(`
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 !! Unsupported terminal, password will be echoed.
 Passphrase: {{.InputLine "foo"}}
 Address: {d4584b5f6229b7be90727b0fc8c6b91bb427821f}
@@ -122,9 +154,15 @@ Address: {d4584b5f6229b7be90727b0fc8c6b91bb427821f}
 }
 
 func TestWalletImportBadPassword(t *testing.T) {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t, "--lightkdf", "wallet", "import", "testdata/guswallet.json")
 	defer gtsf.expectExit()
 	gtsf.expect(`
+=======
+	gdbix := runGeth(t, "--lightkdf", "wallet", "import", "testdata/guswallet.json")
+	defer gdbix.expectExit()
+	gdbix.expect(`
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 !! Unsupported terminal, password will be echoed.
 Passphrase: {{.InputLine "wrong"}}
 Fatal: could not decrypt key with given passphrase
@@ -133,7 +171,11 @@ Fatal: could not decrypt key with given passphrase
 
 func TestUnlockFlag(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--datadir", datadir, "--nat", "none", "--nodiscover", "--dev",
 		"--unlock", "f466859ead1932d743d622cb74fc058882e8648a",
 		"js", "testdata/empty.js")
@@ -148,7 +190,11 @@ Passphrase: {{.InputLine "foobar"}}
 		"Unlocked account f466859ead1932d743d622cb74fc058882e8648a",
 	}
 	for _, m := range wantMessages {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 		if strings.Index(gtsf.stderrText(), m) == -1 {
+=======
+		if !strings.Contains(gdbix.stderrText(), m) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 			t.Errorf("stderr text does not contain %q", m)
 		}
 	}
@@ -156,7 +202,11 @@ Passphrase: {{.InputLine "foobar"}}
 
 func TestUnlockFlagWrongPassword(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--datadir", datadir, "--nat", "none", "--nodiscover", "--dev",
 		"--unlock", "f466859ead1932d743d622cb74fc058882e8648a")
 	defer gtsf.expectExit()
@@ -172,10 +222,17 @@ Fatal: Failed to unlock account f466859ead1932d743d622cb74fc058882e8648a (could 
 `)
 }
 
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 // https://github.com/teslafunds/go-teslafunds/issues/1785
 func TestUnlockFlagMultiIndex(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	gtsf := runGtsf(t,
+=======
+// https://github.com/dubaicoin-dbix/go-dubaicoin/issues/1785
+func TestUnlockFlagMultiIndex(t *testing.T) {
+	datadir := tmpDatadirWithKeystore(t)
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--datadir", datadir, "--nat", "none", "--nodiscover", "--dev",
 		"--unlock", "0,2",
 		"js", "testdata/empty.js")
@@ -193,7 +250,11 @@ Passphrase: {{.InputLine "foobar"}}
 		"Unlocked account 289d485d9771714cce91d3393d764e1311907acc",
 	}
 	for _, m := range wantMessages {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 		if strings.Index(gtsf.stderrText(), m) == -1 {
+=======
+		if !strings.Contains(gdbix.stderrText(), m) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 			t.Errorf("stderr text does not contain %q", m)
 		}
 	}
@@ -201,7 +262,11 @@ Passphrase: {{.InputLine "foobar"}}
 
 func TestUnlockFlagPasswordFile(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--datadir", datadir, "--nat", "none", "--nodiscover", "--dev",
 		"--password", "testdata/passwords.txt", "--unlock", "0,2",
 		"js", "testdata/empty.js")
@@ -212,7 +277,11 @@ func TestUnlockFlagPasswordFile(t *testing.T) {
 		"Unlocked account 289d485d9771714cce91d3393d764e1311907acc",
 	}
 	for _, m := range wantMessages {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 		if strings.Index(gtsf.stderrText(), m) == -1 {
+=======
+		if !strings.Contains(gdbix.stderrText(), m) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 			t.Errorf("stderr text does not contain %q", m)
 		}
 	}
@@ -220,7 +289,11 @@ func TestUnlockFlagPasswordFile(t *testing.T) {
 
 func TestUnlockFlagPasswordFileWrongPassword(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--datadir", datadir, "--nat", "none", "--nodiscover", "--dev",
 		"--password", "testdata/wrong-passwords.txt", "--unlock", "0,2")
 	defer gtsf.expectExit()
@@ -231,7 +304,11 @@ Fatal: Failed to unlock account 0 (could not decrypt key with given passphrase)
 
 func TestUnlockFlagAmbiguous(t *testing.T) {
 	store := filepath.Join("..", "..", "accounts", "testdata", "dupes")
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--keystore", store, "--nat", "none", "--nodiscover", "--dev",
 		"--unlock", "f466859ead1932d743d622cb74fc058882e8648a",
 		"js", "testdata/empty.js")
@@ -260,7 +337,11 @@ In order to avoid this warning, you need to remove the following duplicate key f
 		"Unlocked account f466859ead1932d743d622cb74fc058882e8648a",
 	}
 	for _, m := range wantMessages {
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 		if strings.Index(gtsf.stderrText(), m) == -1 {
+=======
+		if !strings.Contains(gdbix.stderrText(), m) {
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 			t.Errorf("stderr text does not contain %q", m)
 		}
 	}
@@ -268,7 +349,11 @@ In order to avoid this warning, you need to remove the following duplicate key f
 
 func TestUnlockFlagAmbiguousWrongPassword(t *testing.T) {
 	store := filepath.Join("..", "..", "accounts", "testdata", "dupes")
+<<<<<<< HEAD:cmd/gtsf/accountcmd_test.go
 	gtsf := runGtsf(t,
+=======
+	gdbix := runGeth(t,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:cmd/gdbix/accountcmd_test.go
 		"--keystore", store, "--nat", "none", "--nodiscover", "--dev",
 		"--unlock", "f466859ead1932d743d622cb74fc058882e8648a")
 	defer gtsf.expectExit()

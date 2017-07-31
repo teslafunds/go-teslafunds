@@ -22,8 +22,13 @@ package node
 import (
 	"reflect"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/p2p"
 	"github.com/teslafunds/go-teslafunds/rpc"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rpc"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // NoopService is a trivial implementation of the Service interface.

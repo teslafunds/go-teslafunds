@@ -1,18 +1,33 @@
+<<<<<<< HEAD
 // Copyright 2015 The go-teslafunds Authors
 // This file is part of go-teslafunds.
 //
 // go-teslafunds is free software: you can redistribute it and/or modify
+=======
+// Copyright 2015 The go-ethereum Authors
+// This file is part of go-ethereum.
+//
+// go-ethereum is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // go-teslafunds is distributed in the hope that it will be useful,
+=======
+// go-ethereum is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
+<<<<<<< HEAD
 // along with go-teslafunds. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 // rlpdump is a pretty-printer for RLP data.
 package main
@@ -26,7 +41,11 @@ import (
 	"os"
 	"strings"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/rlp"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/rlp"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 var (

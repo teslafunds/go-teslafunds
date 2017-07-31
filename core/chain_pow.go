@@ -19,8 +19,13 @@ package core
 import (
 	"runtime"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/pow"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/pow"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // nonceCheckResult contains the result of a nonce verification.

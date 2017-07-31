@@ -1,18 +1,33 @@
+<<<<<<< HEAD
 // Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2014 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 package trie
 
@@ -28,8 +43,13 @@ import (
 	"testing/quick"
 
 	"github.com/davecgh/go-spew/spew"
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/ethdb"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/dbixdb"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 func init() {
@@ -56,9 +76,11 @@ func TestEmptyTrie(t *testing.T) {
 func TestNull(t *testing.T) {
 	var trie Trie
 	key := make([]byte, 32)
-	value := common.FromHex("0x823140710bf13990e4500136726d8b55")
+	value := []byte("test")
 	trie.Update(key, value)
-	value = trie.Get(key)
+	if !bytes.Equal(trie.Get(key), value) {
+		t.Fatal("wrong value")
+	}
 }
 
 func TestMissingRoot(t *testing.T) {
@@ -196,11 +218,19 @@ func TestDelete(t *testing.T) {
 	trie := newEmpty()
 	vals := []struct{ k, v string }{
 		{"do", "verb"},
+<<<<<<< HEAD
 		{"teslafunds", "wookiedoo"},
 		{"horse", "stallion"},
 		{"shaman", "horse"},
 		{"doge", "coin"},
 		{"teslafunds", ""},
+=======
+		{"ether", "wookiedoo"},
+		{"horse", "stallion"},
+		{"shaman", "horse"},
+		{"doge", "coin"},
+		{"ether", ""},
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 		{"dog", "puppy"},
 		{"shaman", ""},
 	}
@@ -224,11 +254,19 @@ func TestEmptyValues(t *testing.T) {
 
 	vals := []struct{ k, v string }{
 		{"do", "verb"},
+<<<<<<< HEAD
 		{"teslafunds", "wookiedoo"},
 		{"horse", "stallion"},
 		{"shaman", "horse"},
 		{"doge", "coin"},
 		{"teslafunds", ""},
+=======
+		{"ether", "wookiedoo"},
+		{"horse", "stallion"},
+		{"shaman", "horse"},
+		{"doge", "coin"},
+		{"ether", ""},
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 		{"dog", "puppy"},
 		{"shaman", ""},
 	}
@@ -247,7 +285,11 @@ func TestReplication(t *testing.T) {
 	trie := newEmpty()
 	vals := []struct{ k, v string }{
 		{"do", "verb"},
+<<<<<<< HEAD
 		{"teslafunds", "wookiedoo"},
+=======
+		{"ether", "wookiedoo"},
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 		{"horse", "stallion"},
 		{"shaman", "horse"},
 		{"doge", "coin"},
@@ -283,7 +325,11 @@ func TestReplication(t *testing.T) {
 	// perform some insertions on the new trie.
 	vals2 := []struct{ k, v string }{
 		{"do", "verb"},
+<<<<<<< HEAD
 		{"teslafunds", "wookiedoo"},
+=======
+		{"ether", "wookiedoo"},
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 		{"horse", "stallion"},
 		// {"shaman", "horse"},
 		// {"doge", "coin"},
@@ -300,20 +346,14 @@ func TestReplication(t *testing.T) {
 	}
 }
 
-<<<<<<< HEAD
-func paranoiaCheck(t1 *Trie) (bool, *Trie) {
-	t2 := new(Trie)
-	it := NewIterator(t1)
-	for it.Next() {
-		t2.Update(it.Key, it.Value)
-	}
-	return t2.Hash() == t1.Hash(), t2
+func TestLargeValue(t *testing.T) {
+	trie := newEmpty()
+	trie.Update([]byte("key1"), []byte{99, 99, 99, 99})
+	trie.Update([]byte("key2"), bytes.Repeat([]byte{1}, 32))
+	trie.Hash()
 }
 
-func TestParanoia(t *testing.T) {
-	t.Skip()
-	trie := newEmpty()
-
+<<<<<<< HEAD
 	vals := []struct{ k, v string }{
 		{"do", "verb"},
 		{"teslafunds", "wookiedoo"},
@@ -334,43 +374,57 @@ func TestParanoia(t *testing.T) {
 	if !ok {
 		t.Errorf("trie paranoia check failed %x %x", trie.Hash(), t2.Hash())
 	}
-}
-
 =======
->>>>>>> 688152569fd325eb18357a18d8ab7068b8a9082c
-// Not an actual test
-func TestOutput(t *testing.T) {
-	t.Skip()
+type countingDB struct {
+	Database
+	gets map[string]int
+>>>>>>> 7fdd714... gdbix-update v1.5.0
+}
 
-	base := "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+func (db *countingDB) Get(key []byte) ([]byte, error) {
+	db.gets[string(key)]++
+	return db.Database.Get(key)
+}
+
+// TestCacheUnload checks that decoded nodes are unloaded after a
+// certain number of commit operations.
+func TestCacheUnload(t *testing.T) {
+	// Create test trie with two branches.
 	trie := newEmpty()
-	for i := 0; i < 50; i++ {
-		updateString(trie, fmt.Sprintf("%s%d", base, i), "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+	key1 := "---------------------------------"
+	key2 := "---some other branch"
+	updateString(trie, key1, "this is the branch of key1.")
+	updateString(trie, key2, "this is the branch of key2.")
+	root, _ := trie.Commit()
+
+	// Commit the trie repeatedly and access key1.
+	// The branch containing it is loaded from DB exactly two times:
+	// in the 0th and 6th iteration.
+	db := &countingDB{Database: trie.db, gets: make(map[string]int)}
+	trie, _ = New(root, db)
+	trie.SetCacheLimit(5)
+	for i := 0; i < 12; i++ {
+		getString(trie, key1)
+		trie.Commit()
 	}
-	fmt.Println("############################## FULL ################################")
-	fmt.Println(trie.root)
 
-	trie.Commit()
-	fmt.Println("############################## SMALL ################################")
-	trie2, _ := New(trie.Hash(), trie.db)
-	getString(trie2, base+"20")
-	fmt.Println(trie2.root)
+	// Check that it got loaded two times.
+	for dbkey, count := range db.gets {
+		if count != 2 {
+			t.Errorf("db key %x loaded %d times, want %d times", []byte(dbkey), count, 2)
+		}
+	}
 }
 
-func TestLargeValue(t *testing.T) {
-	trie := newEmpty()
-	trie.Update([]byte("key1"), []byte{99, 99, 99, 99})
-	trie.Update([]byte("key2"), bytes.Repeat([]byte{1}, 32))
-	trie.Hash()
-}
+// randTest performs random trie operations.
+// Instances of this test are created by Generate.
+type randTest []randTestStep
 
 type randTestStep struct {
 	op    int
 	key   []byte // for opUpdate, opDelete, opGet
 	value []byte // for opUpdate
 }
-
-type randTest []randTestStep
 
 const (
 	opUpdate = iota
@@ -380,6 +434,7 @@ const (
 	opHash
 	opReset
 	opItercheckhash
+	opCheckCacheInvariant
 	opMax // boundary value, not an actual op
 )
 
@@ -475,6 +530,44 @@ func runRandTest(rt randTest) bool {
 				fmt.Println("hashes not equal")
 				return false
 			}
+		case opCheckCacheInvariant:
+			return checkCacheInvariant(tr.root, nil, tr.cachegen, false, 0)
+		}
+	}
+	return true
+}
+
+func checkCacheInvariant(n, parent node, parentCachegen uint16, parentDirty bool, depth int) bool {
+	var children []node
+	var flag nodeFlag
+	switch n := n.(type) {
+	case *shortNode:
+		flag = n.flags
+		children = []node{n.Val}
+	case *fullNode:
+		flag = n.flags
+		children = n.Children[:]
+	default:
+		return true
+	}
+
+	showerror := func() {
+		fmt.Printf("at depth %d node %s", depth, spew.Sdump(n))
+		fmt.Printf("parent: %s", spew.Sdump(parent))
+	}
+	if flag.gen > parentCachegen {
+		fmt.Printf("cache invariant violation: %d > %d\n", flag.gen, parentCachegen)
+		showerror()
+		return false
+	}
+	if depth > 0 && !parentDirty && flag.dirty {
+		fmt.Printf("cache invariant violation: child is dirty but parent isn't\n")
+		showerror()
+		return false
+	}
+	for _, child := range children {
+		if !checkCacheInvariant(child, n, flag.gen, flag.dirty, depth+1) {
+			return false
 		}
 	}
 	return true
@@ -498,8 +591,7 @@ const benchElemCount = 20000
 func benchGet(b *testing.B, commit bool) {
 	trie := new(Trie)
 	if commit {
-		dir, tmpdb := tempDB()
-		defer os.RemoveAll(dir)
+		_, tmpdb := tempDB()
 		trie, _ = New(common.Hash{}, tmpdb)
 	}
 	k := make([]byte, 32)
@@ -515,6 +607,13 @@ func benchGet(b *testing.B, commit bool) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		trie.Get(k)
+	}
+	b.StopTimer()
+
+	if commit {
+		ldb := trie.db.(*ethdb.LDBDatabase)
+		ldb.Close()
+		os.RemoveAll(ldb.Path())
 	}
 }
 

@@ -1,23 +1,43 @@
+<<<<<<< HEAD
 // Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2014 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
 
 package trie
 
 import "github.com/teslafunds/go-teslafunds/common"
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
+package trie
+
+import "github.com/dubaicoin-dbix/go-dubaicoin/common"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
+
+// Iterator is a key-value trie iterator that traverses a Trie.
 type Iterator struct {
 	trie   *Trie
 	nodeIt *NodeIterator
@@ -55,11 +75,11 @@ func (it *Iterator) makeKey() []byte {
 	key := it.keyBuf[:0]
 	for _, se := range it.nodeIt.stack {
 		switch node := se.node.(type) {
-		case fullNode:
+		case *fullNode:
 			if se.child <= 16 {
 				key = append(key, byte(se.child))
 			}
-		case shortNode:
+		case *shortNode:
 			if hasTerm(node.Key) {
 				key = append(key, node.Key[:len(node.Key)-1]...)
 			} else {
@@ -147,7 +167,7 @@ func (it *NodeIterator) step() error {
 		if (ancestor == common.Hash{}) {
 			ancestor = parent.parent
 		}
-		if node, ok := parent.node.(fullNode); ok {
+		if node, ok := parent.node.(*fullNode); ok {
 			// Full node, traverse all children, then the node itself
 			if parent.child >= len(node.Children) {
 				break
@@ -155,7 +175,7 @@ func (it *NodeIterator) step() error {
 			for parent.child++; parent.child < len(node.Children); parent.child++ {
 				if current := node.Children[parent.child]; current != nil {
 					it.stack = append(it.stack, &nodeIteratorState{
-						hash:   common.BytesToHash(node.hash),
+						hash:   common.BytesToHash(node.flags.hash),
 						node:   current,
 						parent: ancestor,
 						child:  -1,
@@ -163,14 +183,14 @@ func (it *NodeIterator) step() error {
 					break
 				}
 			}
-		} else if node, ok := parent.node.(shortNode); ok {
+		} else if node, ok := parent.node.(*shortNode); ok {
 			// Short node, traverse the pointer singleton child, then the node itself
 			if parent.child >= 0 {
 				break
 			}
 			parent.child++
 			it.stack = append(it.stack, &nodeIteratorState{
-				hash:   common.BytesToHash(node.hash),
+				hash:   common.BytesToHash(node.flags.hash),
 				node:   node.Val,
 				parent: ancestor,
 				child:  -1,

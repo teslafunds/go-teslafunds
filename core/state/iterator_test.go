@@ -20,8 +20,13 @@ import (
 	"bytes"
 	"testing"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/ethdb"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/dbixdb"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // Tests that the node iterator indeed walks over the entire database contents.
@@ -41,7 +46,7 @@ func TestNodeIteratorCoverage(t *testing.T) {
 		}
 	}
 	// Cross check the hashes and the database itself
-	for hash, _ := range hashes {
+	for hash := range hashes {
 		if _, err := db.Get(hash.Bytes()); err != nil {
 			t.Errorf("failed to retrieve reported node %x: %v", hash, err)
 		}

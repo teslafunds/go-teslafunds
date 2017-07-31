@@ -1,18 +1,33 @@
+<<<<<<< HEAD
 // Copyright 2015 The go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2015 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 // Package accounts implements encrypted storage of secp256k1 private keys.
 //
@@ -32,8 +47,13 @@ import (
 	"sync"
 	"time"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/crypto"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/crypto"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 var (
@@ -45,7 +65,11 @@ var (
 // Account represents a stored key.
 // When used as an argument, it selects a unique key file to act on.
 type Account struct {
+<<<<<<< HEAD
 	Address common.Address // Teslafunds account address derived from the key
+=======
+	Address common.Address // Ethereum account address derived from the key
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 	// File contains the key file name.
 	// When Acccount is used as an argument to select a key, File can be left blank to
@@ -113,9 +137,9 @@ func (am *Manager) Accounts() []Account {
 	return am.cache.accounts()
 }
 
-// DeleteAccount deletes the key matched by account if the passphrase is correct.
-// If a contains no filename, the address must match a unique key.
-func (am *Manager) DeleteAccount(a Account, passphrase string) error {
+// Delete deletes the key matched by account if the passphrase is correct.
+// If the account contains no filename, the address must match a unique key.
+func (am *Manager) Delete(a Account, passphrase string) error {
 	// Decrypting the key isn't really necessary, but we do
 	// it anyway to check the password and zero out the key
 	// immediately afterwards.
@@ -136,10 +160,12 @@ func (am *Manager) DeleteAccount(a Account, passphrase string) error {
 	return err
 }
 
-// Sign signs hash with an unlocked private key matching the given address.
-func (am *Manager) Sign(addr common.Address, hash []byte) (signature []byte, err error) {
+// Sign calculates a ECDSA signature for the given hash. The produced signature
+// is in the [R || S || V] format where V is 0 or 1.
+func (am *Manager) Sign(addr common.Address, hash []byte) ([]byte, error) {
 	am.mu.RLock()
 	defer am.mu.RUnlock()
+
 	unlockedKey, found := am.unlocked[addr]
 	if !found {
 		return nil, ErrLocked
@@ -147,14 +173,14 @@ func (am *Manager) Sign(addr common.Address, hash []byte) (signature []byte, err
 	return crypto.Sign(hash, unlockedKey.PrivateKey)
 }
 
-// SignWithPassphrase signs hash if the private key matching the given address can be
-// decrypted with the given passphrase.
-func (am *Manager) SignWithPassphrase(addr common.Address, passphrase string, hash []byte) (signature []byte, err error) {
-	_, key, err := am.getDecryptedKey(Account{Address: addr}, passphrase)
+// SignWithPassphrase signs hash if the private key matching the given address
+// can be decrypted with the given passphrase. The produced signature is in the
+// [R || S || V] format where V is 0 or 1.
+func (am *Manager) SignWithPassphrase(a Account, passphrase string, hash []byte) (signature []byte, err error) {
+	_, key, err := am.getDecryptedKey(a, passphrase)
 	if err != nil {
 		return nil, err
 	}
-
 	defer zeroKey(key.PrivateKey)
 	return crypto.Sign(hash, key.PrivateKey)
 }
@@ -213,11 +239,17 @@ func (am *Manager) TimedUnlock(a Account, passphrase string, timeout time.Durati
 	return nil
 }
 
-func (am *Manager) getDecryptedKey(a Account, auth string) (Account, *Key, error) {
+// Find resolves the given account into a unique entry in the keystore.
+func (am *Manager) Find(a Account) (Account, error) {
 	am.cache.maybeReload()
 	am.cache.mu.Lock()
 	a, err := am.cache.find(a)
 	am.cache.mu.Unlock()
+	return a, err
+}
+
+func (am *Manager) getDecryptedKey(a Account, auth string) (Account, *Key, error) {
+	a, err := am.Find(a)
 	if err != nil {
 		return a, nil, err
 	}
@@ -322,7 +354,11 @@ func (am *Manager) Update(a Account, passphrase, newPassphrase string) error {
 	return am.keyStore.StoreKey(a.File, key, newPassphrase)
 }
 
+<<<<<<< HEAD
 // ImportPreSaleKey decrypts the given Teslafunds presale wallet and stores
+=======
+// ImportPreSaleKey decrypts the given Ethereum presale wallet and stores
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // a key file in the key directory. The key file is encrypted with the same passphrase.
 func (am *Manager) ImportPreSaleKey(keyJSON []byte, passphrase string) (Account, error) {
 	a, _, err := importPreSaleKey(am.keyStore, keyJSON, passphrase)

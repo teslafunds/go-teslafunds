@@ -10,8 +10,13 @@ fi
 # Create fake Go workspace if it doesn't exist yet.
 workspace="$PWD/build/_workspace"
 root="$PWD"
+<<<<<<< HEAD
 ethdir="$workspace/src/github.com/teslafunds"
 if [ ! -L "$ethdir/go-teslafunds" ]; then
+=======
+ethdir="$workspace/src/github.com/dubaicoin-dbix"
+if [ ! -L "$ethdir/go-dubaicoin" ]; then
+>>>>>>> 7fdd714... gdbix-update v1.5.0
     mkdir -p "$ethdir"
     cd "$ethdir"
     ln -s ../../../../../. go-teslafunds
@@ -19,7 +24,6 @@ if [ ! -L "$ethdir/go-teslafunds" ]; then
 fi
 
 # Set up the environment to use the workspace.
-# Also add Godeps workspace so we build using canned dependencies.
 GOPATH="$workspace"
 export GOPATH
 

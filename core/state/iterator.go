@@ -21,9 +21,15 @@ import (
 	"fmt"
 	"math/big"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/rlp"
 	"github.com/teslafunds/go-teslafunds/trie"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rlp"
+	"github.com/dubaicoin-dbix/go-dubaicoin/trie"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // NodeIterator is an iterator to traverse the entire state trie post-order,
@@ -123,7 +129,7 @@ func (it *NodeIterator) step() error {
 	if !it.dataIt.Next() {
 		it.dataIt = nil
 	}
-	if bytes.Compare(account.CodeHash, emptyCodeHash) != 0 {
+	if !bytes.Equal(account.CodeHash, emptyCodeHash) {
 		it.codeHash = common.BytesToHash(account.CodeHash)
 		it.code, err = it.state.db.Get(account.CodeHash)
 		if err != nil {

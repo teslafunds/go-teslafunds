@@ -20,10 +20,17 @@ import (
 	"fmt"
 	"log"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/node"
 	"github.com/teslafunds/go-teslafunds/p2p"
 	"github.com/teslafunds/go-teslafunds/p2p/discover"
 	"github.com/teslafunds/go-teslafunds/rpc"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/node"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p/discover"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rpc"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // SampleService is a trivial network service that can be attached to a node for
@@ -41,10 +48,10 @@ func (s *SampleService) APIs() []rpc.API           { return nil }
 func (s *SampleService) Start(*p2p.Server) error   { fmt.Println("Service starting..."); return nil }
 func (s *SampleService) Stop() error               { fmt.Println("Service stopping..."); return nil }
 
-func ExampleUsage() {
+func ExampleService() {
 	// Create a network node to run protocols with the default values. The below list
 	// is only used to display each of the configuration options. All of these could
-	// have been ommited if the default behavior is desired.
+	// have been omitted if the default behavior is desired.
 	nodeConfig := &node.Config{
 		DataDir:         "",                 // Empty uses ephemeral storage
 		PrivateKey:      nil,                // Nil generates a node key on the fly

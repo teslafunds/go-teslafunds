@@ -19,7 +19,11 @@ package abi
 import (
 	"reflect"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // packBytesSlice packs the given bytes as [L, V] as the canonical representation
@@ -54,7 +58,7 @@ func packElement(t Type, reflectValue reflect.Value) []byte {
 			reflectValue = mustArrayToByteSlice(reflectValue)
 		}
 		return packBytesSlice(reflectValue.Bytes(), reflectValue.Len())
-	case FixedBytesTy:
+	case FixedBytesTy, FunctionTy:
 		if reflectValue.Kind() == reflect.Array {
 			reflectValue = mustArrayToByteSlice(reflectValue)
 		}

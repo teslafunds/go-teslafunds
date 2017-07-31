@@ -1,18 +1,33 @@
+<<<<<<< HEAD:tsf/downloader/peer.go
 // Copyright 2015 The go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2015 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/downloader/peer.go
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD:tsf/downloader/peer.go
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/downloader/peer.go
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD:tsf/downloader/peer.go
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/downloader/peer.go
 
 // Contains the active peer-set of the downloader, maintaining both failures
 // as well as reputation metrics to prioritize the block retrievals.
@@ -30,7 +45,11 @@ import (
 	"sync/atomic"
 	"time"
 
+<<<<<<< HEAD:tsf/downloader/peer.go
 	"github.com/teslafunds/go-teslafunds/common"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/downloader/peer.go
 )
 
 const (
@@ -205,7 +224,7 @@ func (p *peer) FetchNodeData(request *fetchRequest) error {
 
 	// Convert the hash set to a retrievable slice
 	hashes := make([]common.Hash, 0, len(request.Hashes))
-	for hash, _ := range request.Hashes {
+	for hash := range request.Hashes {
 		hashes = append(hashes, hash)
 	}
 	go p.getNodeData(hashes)
@@ -314,7 +333,7 @@ func (p *peer) MarkLacking(hash common.Hash) {
 	defer p.lock.Unlock()
 
 	for len(p.lacking) >= maxLackingHashes {
-		for drop, _ := range p.lacking {
+		for drop := range p.lacking {
 			delete(p.lacking, drop)
 			break
 		}
@@ -515,7 +534,6 @@ func (ps *peerSet) idlePeers(minProtocol, maxProtocol int, idleCheck func(*peer)
 
 	idle, total := make([]*peer, 0, len(ps.peers)), 0
 	for _, p := range ps.peers {
-
 		if p.version >= minProtocol && p.version <= maxProtocol {
 			if idleCheck(p) {
 				idle = append(idle, p)

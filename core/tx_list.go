@@ -22,7 +22,11 @@ import (
 	"math/big"
 	"sort"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/core/types"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // nonceHeap is a heap.Interface implementation over 64bit unsigned integers for
@@ -110,7 +114,7 @@ func (m *txSortedMap) Filter(filter func(*types.Transaction) bool) types.Transac
 	// If transactions were removed, the heap and cache are ruined
 	if len(removed) > 0 {
 		*m.index = make([]uint64, 0, len(m.items))
-		for nonce, _ := range m.items {
+		for nonce := range m.items {
 			*m.index = append(*m.index, nonce)
 		}
 		heap.Init(m.index)
@@ -216,7 +220,7 @@ func (m *txSortedMap) Flatten() types.Transactions {
 // txList is a "list" of transactions belonging to an account, sorted by account
 // nonce. The same type can be used both for storing contiguous transactions for
 // the executable/pending queue; and for storing gapped transactions for the non-
-// executable/future queue, with minor behavoiral changes.
+// executable/future queue, with minor behavioral changes.
 type txList struct {
 	strict  bool         // Whether nonces are strictly continuous or not
 	txs     *txSortedMap // Heap indexed sorted hash map of the transactions

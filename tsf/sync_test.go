@@ -14,15 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
+<<<<<<< HEAD:tsf/sync_test.go
 package tsf
+=======
+package eth
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/sync_test.go
 
 import (
 	"sync/atomic"
 	"testing"
 	"time"
 
+<<<<<<< HEAD:tsf/sync_test.go
 	"github.com/teslafunds/go-teslafunds/p2p"
 	"github.com/teslafunds/go-teslafunds/p2p/discover"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p/discover"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/sync_test.go
 )
 
 // Tests that fast sync gets disabled as soon as a real block is successfully

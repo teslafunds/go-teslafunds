@@ -42,7 +42,11 @@ import (
 	"math/big"
 	"testing"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/crypto/secp256k1"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/crypto/secp256k1"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 var dumpEnc bool
@@ -492,17 +496,17 @@ type testCase struct {
 }
 
 var testCases = []testCase{
-	testCase{
+	{
 		Curve:    elliptic.P256(),
 		Name:     "P256",
 		Expected: true,
 	},
-	testCase{
+	{
 		Curve:    elliptic.P384(),
 		Name:     "P384",
 		Expected: true,
 	},
-	testCase{
+	{
 		Curve:    elliptic.P521(),
 		Name:     "P521",
 		Expected: true,

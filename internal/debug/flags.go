@@ -22,8 +22,13 @@ import (
 	_ "net/http/pprof"
 	"runtime"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/logger"
 	"github.com/teslafunds/go-teslafunds/logger/glog"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -53,10 +58,17 @@ var (
 		Value: 6060,
 	}
 	pprofAddrFlag = cli.StringFlag{
+<<<<<<< HEAD
 	Name: "pprofaddr",
 	Usage: "pprof HTTP server listening interface",
 	Value: "127.0.0.1",
 }
+=======
+		Name:  "pprofaddr",
+		Usage: "pprof HTTP server listening interface",
+		Value: "127.0.0.1",
+	}
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 	memprofilerateFlag = cli.IntFlag{
 		Name:  "memprofilerate",
 		Usage: "Turn on memory profiling with the given rate",

@@ -1,5 +1,8 @@
 // Copyright 2015 The go-ethereum Authors
+<<<<<<< HEAD:tsf/backend_test.go
 // Copyright 2016 The go-teslafunds Authors
+=======
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/backend_test.go
 // This file is part of the go-ethereum library.
 //
 // The go-ethereum library is free software: you can redistribute it and/or modify
@@ -15,17 +18,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
+<<<<<<< HEAD:tsf/backend_test.go
 package tsf
+=======
+package eth
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/backend_test.go
 
 import (
 	"math/big"
 	"testing"
 
+<<<<<<< HEAD:tsf/backend_test.go
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core"
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/core/vm"
 	"github.com/teslafunds/go-teslafunds/ethdb"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/dbixdb"
+	"github.com/dubaicoin-dbix/go-dubaicoin/params"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/backend_test.go
 )
 
 func TestMipmapUpgrade(t *testing.T) {
@@ -33,17 +48,17 @@ func TestMipmapUpgrade(t *testing.T) {
 	addr := common.BytesToAddress([]byte("jeff"))
 	genesis := core.WriteGenesisBlockForTesting(db)
 
-	chain, receipts := core.GenerateChain(nil, genesis, db, 10, func(i int, gen *core.BlockGen) {
+	chain, receipts := core.GenerateChain(params.TestChainConfig, genesis, db, 10, func(i int, gen *core.BlockGen) {
 		var receipts types.Receipts
 		switch i {
 		case 1:
 			receipt := types.NewReceipt(nil, new(big.Int))
-			receipt.Logs = vm.Logs{&vm.Log{Address: addr}}
+			receipt.Logs = []*types.Log{{Address: addr}}
 			gen.AddUncheckedReceipt(receipt)
 			receipts = types.Receipts{receipt}
 		case 2:
 			receipt := types.NewReceipt(nil, new(big.Int))
-			receipt.Logs = vm.Logs{&vm.Log{Address: addr}}
+			receipt.Logs = []*types.Log{{Address: addr}}
 			gen.AddUncheckedReceipt(receipt)
 			receipts = types.Receipts{receipt}
 		}
@@ -62,7 +77,7 @@ func TestMipmapUpgrade(t *testing.T) {
 		if err := core.WriteHeadBlockHash(db, block.Hash()); err != nil {
 			t.Fatalf("failed to insert block number: %v", err)
 		}
-		if err := core.WriteBlockReceipts(db, block.Hash(), receipts[i]); err != nil {
+		if err := core.WriteBlockReceipts(db, block.Hash(), block.NumberU64(), receipts[i]); err != nil {
 			t.Fatal("error writing block receipts:", err)
 		}
 	}

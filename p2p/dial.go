@@ -1,31 +1,54 @@
+<<<<<<< HEAD
 // Copyright 2015 The go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2015 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 package p2p
 
 import (
 	"container/heap"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"net"
 	"time"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/logger"
 	"github.com/teslafunds/go-teslafunds/logger/glog"
 	"github.com/teslafunds/go-teslafunds/p2p/discover"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p/discover"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p/netutil"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 const (
@@ -48,6 +71,7 @@ const (
 type dialstate struct {
 	maxDynDials int
 	ntab        discoverTable
+	netrestrict *netutil.Netlist
 
 	lookupRunning bool
 	dialing       map[discover.NodeID]connFlag
@@ -100,10 +124,11 @@ type waitExpireTask struct {
 	time.Duration
 }
 
-func newDialState(static []*discover.Node, ntab discoverTable, maxdyn int) *dialstate {
+func newDialState(static []*discover.Node, ntab discoverTable, maxdyn int, netrestrict *netutil.Netlist) *dialstate {
 	s := &dialstate{
 		maxDynDials: maxdyn,
 		ntab:        ntab,
+		netrestrict: netrestrict,
 		static:      make(map[discover.NodeID]*dialTask),
 		dialing:     make(map[discover.NodeID]connFlag),
 		randomNodes: make([]*discover.Node, maxdyn/2),
@@ -121,14 +146,16 @@ func (s *dialstate) addStatic(n *discover.Node) {
 	s.static[n.ID] = &dialTask{flags: staticDialedConn, dest: n}
 }
 
+func (s *dialstate) removeStatic(n *discover.Node) {
+	// This removes a task so future attempts to connect will not be made.
+	delete(s.static, n.ID)
+}
+
 func (s *dialstate) newTasks(nRunning int, peers map[discover.NodeID]*Peer, now time.Time) []task {
 	var newtasks []task
-	isDialing := func(id discover.NodeID) bool {
-		_, found := s.dialing[id]
-		return found || peers[id] != nil || s.hist.contains(id)
-	}
 	addDial := func(flag connFlag, n *discover.Node) bool {
-		if isDialing(n.ID) {
+		if err := s.checkDial(n, peers); err != nil {
+			glog.V(logger.Debug).Infof("skipping dial candidate %x@%v:%d: %v", n.ID[:8], n.IP, n.TCP, err)
 			return false
 		}
 		s.dialing[n.ID] = flag
@@ -154,7 +181,12 @@ func (s *dialstate) newTasks(nRunning int, peers map[discover.NodeID]*Peer, now 
 
 	// Create dials for static nodes if they are not connected.
 	for id, t := range s.static {
-		if !isDialing(id) {
+		err := s.checkDial(t.dest, peers)
+		switch err {
+		case errNotWhitelisted, errSelf:
+			glog.V(logger.Debug).Infof("removing static dial candidate %x@%v:%d: %v", t.dest.ID[:8], t.dest.IP, t.dest.TCP, err)
+			delete(s.static, t.dest.ID)
+		case nil:
 			s.dialing[id] = t.flags
 			newtasks = append(newtasks, t)
 		}
@@ -195,6 +227,31 @@ func (s *dialstate) newTasks(nRunning int, peers map[discover.NodeID]*Peer, now 
 		newtasks = append(newtasks, t)
 	}
 	return newtasks
+}
+
+var (
+	errSelf             = errors.New("is self")
+	errAlreadyDialing   = errors.New("already dialing")
+	errAlreadyConnected = errors.New("already connected")
+	errRecentlyDialed   = errors.New("recently dialed")
+	errNotWhitelisted   = errors.New("not contained in netrestrict whitelist")
+)
+
+func (s *dialstate) checkDial(n *discover.Node, peers map[discover.NodeID]*Peer) error {
+	_, dialing := s.dialing[n.ID]
+	switch {
+	case dialing:
+		return errAlreadyDialing
+	case peers[n.ID] != nil:
+		return errAlreadyConnected
+	case s.ntab != nil && n.ID == s.ntab.Self().ID:
+		return errSelf
+	case s.netrestrict != nil && !s.netrestrict.Contains(n.IP):
+		return errNotWhitelisted
+	case s.hist.contains(n.ID):
+		return errRecentlyDialed
+	}
+	return nil
 }
 
 func (s *dialstate) taskDone(t task, now time.Time) {

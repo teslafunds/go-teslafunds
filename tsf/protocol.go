@@ -1,29 +1,52 @@
+<<<<<<< HEAD:tsf/protocol.go
 // Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2014 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol.go
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD:tsf/protocol.go
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol.go
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD:tsf/protocol.go
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
 
 package tsf
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+
+package eth
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol.go
 
 import (
 	"fmt"
 	"io"
 	"math/big"
 
+<<<<<<< HEAD:tsf/protocol.go
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/rlp"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rlp"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol.go
 )
 
 // Constants to match up protocol versions and messages
@@ -35,7 +58,7 @@ const (
 // Official short name of the protocol used during capability negotiation.
 var ProtocolName = "tsf"
 
-// Supported versions of the eth protocol (first is primary).
+// Supported versions of the dbix protocol (first is primary).
 var ProtocolVersions = []uint{eth63, eth62}
 
 // Number of implemented message corresponding to different protocol versions.
@@ -48,7 +71,11 @@ const (
 
 // tsf protocol message codes
 const (
+<<<<<<< HEAD:tsf/protocol.go
 	// Protocol messages belonging to tsf/62
+=======
+	// Protocol messages belonging to eth/62
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol.go
 	StatusMsg          = 0x00
 	NewBlockHashesMsg  = 0x01
 	TxMsg              = 0x02
@@ -58,7 +85,11 @@ const (
 	BlockBodiesMsg     = 0x06
 	NewBlockMsg        = 0x07
 
+<<<<<<< HEAD:tsf/protocol.go
 	// Protocol messages belonging to tsf/63
+=======
+	// Protocol messages belonging to eth/63
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol.go
 	GetNodeDataMsg = 0x0d
 	NodeDataMsg    = 0x0e
 	GetReceiptsMsg = 0x0f
@@ -98,11 +129,11 @@ var errorToString = map[int]string{
 
 type txPool interface {
 	// AddBatch should add the given transactions to the pool.
-	AddBatch([]*types.Transaction)
+	AddBatch([]*types.Transaction) error
 
 	// Pending should return pending transactions.
 	// The slice should be modifiable by the caller.
-	Pending() map[common.Address]types.Transactions
+	Pending() (map[common.Address]types.Transactions, error)
 }
 
 // statusData is the network packet for the status message.

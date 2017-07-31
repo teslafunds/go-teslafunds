@@ -14,11 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
+<<<<<<< HEAD:tsf/metrics.go
 package tsf
 
 import (
 	"github.com/teslafunds/go-teslafunds/metrics"
 	"github.com/teslafunds/go-teslafunds/p2p"
+=======
+package eth
+
+import (
+	"github.com/dubaicoin-dbix/go-dubaicoin/metrics"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/metrics.go
 )
 
 var (

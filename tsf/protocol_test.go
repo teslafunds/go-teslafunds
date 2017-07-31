@@ -1,20 +1,37 @@
+<<<<<<< HEAD:tsf/protocol_test.go
 // Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
 // This file is part of the go-teslafunds library.
 //
 // The go-teslafunds library is free software: you can redistribute it and/or modify
+=======
+// Copyright 2014 The go-ethereum Authors
+// This file is part of the go-ethereum library.
+//
+// The go-ethereum library is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol_test.go
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD:tsf/protocol_test.go
 // The go-teslafunds library is distributed in the hope that it will be useful,
+=======
+// The go-ethereum library is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol_test.go
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
+<<<<<<< HEAD:tsf/protocol_test.go
 // along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
 
 package tsf
+=======
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
+
+package eth
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol_test.go
 
 import (
 	"fmt"
@@ -22,11 +39,19 @@ import (
 	"testing"
 	"time"
 
+<<<<<<< HEAD:tsf/protocol_test.go
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/crypto"
 	"github.com/teslafunds/go-teslafunds/p2p"
 	"github.com/teslafunds/go-teslafunds/rlp"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/crypto"
+	"github.com/dubaicoin-dbix/go-dubaicoin/p2p"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rlp"
+>>>>>>> 7fdd714... gdbix-update v1.5.0:dbix/protocol_test.go
 )
 
 func init() {
@@ -82,7 +107,7 @@ func testStatusMsgErrors(t *testing.T, protocol int) {
 				t.Errorf("test %d: wrong error: got %q, want %q", i, err, test.wantError)
 			}
 		case <-time.After(2 * time.Second):
-			t.Errorf("protocol did not shut down withing 2 seconds")
+			t.Errorf("protocol did not shut down within 2 seconds")
 		}
 		p.close()
 	}
@@ -178,7 +203,7 @@ func testSendTransactions(t *testing.T, protocol int) {
 func TestGetBlockHeadersDataEncodeDecode(t *testing.T) {
 	// Create a "random" hash for testing
 	var hash common.Hash
-	for i, _ := range hash {
+	for i := range hash {
 		hash[i] = byte(i)
 	}
 	// Assemble some table driven tests

@@ -33,8 +33,13 @@ import (
 	"sync"
 	"time"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/logger"
 	"github.com/teslafunds/go-teslafunds/logger/glog"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // Handler is the global debugging handler.

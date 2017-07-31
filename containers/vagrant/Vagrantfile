@@ -8,7 +8,11 @@ Vagrant.configure(2) do |config|
     vb.memory = "2048"
   end
 
+<<<<<<< HEAD
   config.vm.synced_folder "../../", "/home/vagrant/go/src/github.com/teslafunds/go-teslafunds"
+=======
+  config.vm.synced_folder "../../", "/home/vagrant/go/src/github.com/dubaicoin-dbix/go-dubaicoin"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.provision "shell", inline: <<-SHELL

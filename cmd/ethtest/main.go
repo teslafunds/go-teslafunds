@@ -1,20 +1,37 @@
+<<<<<<< HEAD
 // Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
 // This file is part of go-teslafunds.
 //
 // go-teslafunds is free software: you can redistribute it and/or modify
+=======
+// Copyright 2014 The go-ethereum Authors
+// This file is part of go-ethereum.
+//
+// go-ethereum is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // go-teslafunds is distributed in the hope that it will be useful,
+=======
+// go-ethereum is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
+<<<<<<< HEAD
 // along with go-teslafunds. If not, see <http://www.gnu.org/licenses/>.
 
 // tsftest executes Teslafunds JSON tests.
+=======
+// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+
+// ethtest executes Ethereum JSON tests.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 package main
 
 import (
@@ -25,11 +42,16 @@ import (
 	"path/filepath"
 	"strings"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/logger/glog"
 	"github.com/teslafunds/go-teslafunds/params"
 	"github.com/teslafunds/go-teslafunds/tests"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+	"github.com/dubaicoin-dbix/go-dubaicoin/params"
+	"github.com/dubaicoin-dbix/go-dubaicoin/tests"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 	"gopkg.in/urfave/cli.v1"
-
 )
 
 var (
@@ -50,7 +72,11 @@ var (
 		Name:   "file",
 		Usage:  "Test file or directory. Directories are searched for .json files 1 level deep",
 		Value:  defaultDir,
+<<<<<<< HEAD
 		EnvVar: "TESLAFUNDS_TEST_PATH",
+=======
+		EnvVar: "ETHEREUM_TEST_PATH",
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 	}
 	ContinueOnErrorFlag = cli.BoolFlag{
 		Name:  "continue",
@@ -75,12 +101,13 @@ func runTestWithReader(test string, r io.Reader) error {
 	var err error
 	switch strings.ToLower(test) {
 	case "bk", "block", "blocktest", "blockchaintest", "blocktests", "blockchaintests":
-		err = tests.RunBlockTestWithReader(params.MainNetHomesteadBlock, params.MainNetDAOForkBlock, r, skipTests)
+		err = tests.RunBlockTestWithReader(params.MainNetHomesteadBlock, params.MainNetDAOForkBlock, params.MainNetHomesteadGasRepriceBlock, r, skipTests)
 	case "st", "state", "statetest", "statetests":
-		rs := tests.RuleSet{HomesteadBlock: params.MainNetHomesteadBlock, DAOForkBlock: params.MainNetDAOForkBlock, DAOForkSupport: true}
+		rs := &params.ChainConfig{HomesteadBlock: params.MainNetHomesteadBlock, DAOForkBlock: params.MainNetDAOForkBlock, DAOForkSupport: true, EIP150Block: params.MainNetHomesteadGasRepriceBlock}
 		err = tests.RunStateTestWithReader(rs, r, skipTests)
 	case "tx", "transactiontest", "transactiontests":
-		err = tests.RunTransactionTestsWithReader(r, skipTests)
+		rs := &params.ChainConfig{HomesteadBlock: params.MainNetHomesteadBlock, DAOForkBlock: params.MainNetDAOForkBlock, DAOForkSupport: true, EIP150Block: params.MainNetHomesteadGasRepriceBlock}
+		err = tests.RunTransactionTestsWithReader(rs, r, skipTests)
 	case "vm", "vmtest", "vmtests":
 		err = tests.RunVmTestWithReader(r, skipTests)
 	case "rlp", "rlptest", "rlptests":
@@ -88,12 +115,7 @@ func runTestWithReader(test string, r io.Reader) error {
 	default:
 		err = fmt.Errorf("Invalid test type specified: %v", test)
 	}
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func getFiles(path string) ([]string, error) {
@@ -205,11 +227,19 @@ func main() {
 	glog.SetToStderr(true)
 
 	app := cli.NewApp()
+<<<<<<< HEAD
 	app.Name = "tsftest"
 	app.Usage = "go-teslafunds test interface"
 	app.Action = setupApp
 	app.Version = "0.2.0"
 	app.Author = "go-teslafunds team"
+=======
+	app.Name = "ethtest"
+	app.Usage = "go-ethereum test interface"
+	app.Action = setupApp
+	app.Version = "0.2.0"
+	app.Author = "go-ethereum team"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 
 	app.Flags = []cli.Flag{
 		TestFlag,

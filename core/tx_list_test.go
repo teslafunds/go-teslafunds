@@ -21,8 +21,13 @@ import (
 	"math/rand"
 	"testing"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/crypto"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/crypto"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // Tests that transactions can be added to strict lists and list contents and

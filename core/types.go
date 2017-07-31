@@ -19,12 +19,18 @@ package core
 import (
 	"math/big"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/accounts"
 	"github.com/teslafunds/go-teslafunds/core/state"
 	"github.com/teslafunds/go-teslafunds/core/types"
 	"github.com/teslafunds/go-teslafunds/core/vm"
 	"github.com/teslafunds/go-teslafunds/ethdb"
 	"github.com/teslafunds/go-teslafunds/event"
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/state"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/vm"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 // Validator is an interface which defines the standard for block validation.
@@ -61,6 +67,7 @@ type HeaderValidator interface {
 // of gas used in the process and return an error if any of the internal rules
 // failed.
 type Processor interface {
+<<<<<<< HEAD
 	Process(block *types.Block, statedb *state.StateDB, cfg vm.Config) (types.Receipts, vm.Logs, *big.Int, error)
 }
 
@@ -75,4 +82,7 @@ type Backend interface {
 	ChainDb() ethdb.Database
 	DappDb() ethdb.Database
 	EventMux() *event.TypeMux
+=======
+	Process(block *types.Block, statedb *state.StateDB, cfg vm.Config) (types.Receipts, []*types.Log, *big.Int, error)
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 }

@@ -1,29 +1,48 @@
+<<<<<<< HEAD
 // Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
 // This file is part of go-teslafunds.
 //
 // go-teslafunds is free software: you can redistribute it and/or modify
+=======
+// Copyright 2014 The go-ethereum Authors
+// This file is part of go-ethereum.
+//
+// go-ethereum is free software: you can redistribute it and/or modify
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
+<<<<<<< HEAD
 // go-teslafunds is distributed in the hope that it will be useful,
+=======
+// go-ethereum is distributed in the hope that it will be useful,
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
+<<<<<<< HEAD
 // along with go-teslafunds. If not, see <http://www.gnu.org/licenses/>.
 
 // Package utils contains internal helper functions for go-teslafunds commands.
+=======
+// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
+
+// Package utils contains internal helper functions for go-ethereum commands.
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 package utils
 
 import (
+	"compress/gzip"
 	"fmt"
 	"io"
 	"os"
 	"os/signal"
 	"regexp"
 	"runtime"
+<<<<<<< HEAD
 
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core"
@@ -34,6 +53,18 @@ import (
 	"github.com/teslafunds/go-teslafunds/node"
 	"github.com/teslafunds/go-teslafunds/rlp"
 
+=======
+	"strings"
+
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/types"
+	"github.com/dubaicoin-dbix/go-dubaicoin/internal/debug"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger"
+	"github.com/dubaicoin-dbix/go-dubaicoin/logger/glog"
+	"github.com/dubaicoin-dbix/go-dubaicoin/node"
+	"github.com/dubaicoin-dbix/go-dubaicoin/rlp"
+>>>>>>> 7fdd714... gdbix-update v1.5.0
 )
 
 const (
@@ -66,7 +97,6 @@ func Fatalf(format string, args ...interface{}) {
 		}
 	}
 	fmt.Fprintf(w, "Fatal: "+format+"\n", args...)
-	logger.Flush()
 	os.Exit(1)
 }
 
@@ -94,7 +124,7 @@ func StartNode(stack *node.Node) {
 
 func FormatTransactionData(data string) []byte {
 	d := common.StringToByteFunc(data, func(s string) (ret []byte) {
-		slice := regexp.MustCompile("\\n|\\s").Split(s, 1000000000)
+		slice := regexp.MustCompile(`\n|\s`).Split(s, 1000000000)
 		for _, dataItem := range slice {
 			d := common.FormatData(dataItem)
 			ret = append(ret, d...)
@@ -134,7 +164,15 @@ func ImportChain(chain *core.BlockChain, fn string) error {
 		return err
 	}
 	defer fh.Close()
-	stream := rlp.NewStream(fh, 0)
+
+	var reader io.Reader = fh
+	if strings.HasSuffix(fn, ".gz") {
+		if reader, err = gzip.NewReader(reader); err != nil {
+			return err
+		}
+	}
+
+	stream := rlp.NewStream(reader, 0)
 
 	// Run actual the import.
 	blocks := make(types.Blocks, importBatchSize)
@@ -196,10 +234,18 @@ func ExportChain(blockchain *core.BlockChain, fn string) error {
 		return err
 	}
 	defer fh.Close()
-	if err := blockchain.Export(fh); err != nil {
+
+	var writer io.Writer = fh
+	if strings.HasSuffix(fn, ".gz") {
+		writer = gzip.NewWriter(writer)
+		defer writer.(*gzip.Writer).Close()
+	}
+
+	if err := blockchain.Export(writer); err != nil {
 		return err
 	}
 	glog.Infoln("Exported blockchain to ", fn)
+
 	return nil
 }
 
@@ -211,7 +257,14 @@ func ExportAppendChain(blockchain *core.BlockChain, fn string, first uint64, las
 		return err
 	}
 	defer fh.Close()
-	if err := blockchain.ExportN(fh, first, last); err != nil {
+
+	var writer io.Writer = fh
+	if strings.HasSuffix(fn, ".gz") {
+		writer = gzip.NewWriter(writer)
+		defer writer.(*gzip.Writer).Close()
+	}
+
+	if err := blockchain.ExportN(writer, first, last); err != nil {
 		return err
 	}
 	glog.Infoln("Exported blockchain to ", fn)

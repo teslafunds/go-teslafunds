@@ -19,6 +19,7 @@ package runtime
 import (
 	"math/big"
 
+<<<<<<< HEAD
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core"
 	"github.com/teslafunds/go-teslafunds/core/state"
@@ -112,7 +113,28 @@ func (self *Env) CallCode(caller vm.ContractRef, addr common.Address, data []byt
 func (self *Env) DelegateCall(me vm.ContractRef, addr common.Address, data []byte, gas, price *big.Int) ([]byte, error) {
 	return core.DelegateCall(self, me, addr, data, gas, price)
 }
+=======
+	"github.com/dubaicoin-dbix/go-dubaicoin/common"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/state"
+	"github.com/dubaicoin-dbix/go-dubaicoin/core/vm"
+)
 
-func (self *Env) Create(caller vm.ContractRef, data []byte, gas, price, value *big.Int) ([]byte, common.Address, error) {
-	return core.Create(self, caller, data, gas, price, value)
+func NewEnv(cfg *Config, state *state.StateDB) *vm.EVM {
+	context := vm.Context{
+		CanTransfer: core.CanTransfer,
+		Transfer:    core.Transfer,
+		GetHash:     func(uint64) common.Hash { return common.Hash{} },
+
+		Origin:      cfg.Origin,
+		Coinbase:    cfg.Coinbase,
+		BlockNumber: cfg.BlockNumber,
+		Time:        cfg.Time,
+		Difficulty:  cfg.Difficulty,
+		GasLimit:    cfg.GasLimit,
+		GasPrice:    new(big.Int),
+	}
+>>>>>>> 7fdd714... gdbix-update v1.5.0
+
+	return vm.NewEVM(context, cfg.State, cfg.ChainConfig, cfg.EVMConfig)
 }
