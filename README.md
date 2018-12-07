@@ -1,4 +1,4 @@
-## Teslafunds Go (https://teslafunds.io/)
+## Teslafunds Go https://teslafunds.io/
 
 ## Automated development builds
 
