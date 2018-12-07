@@ -38,7 +38,7 @@ _______________________________________________________________________
 	./build/bin/gtsf
 
 
-or, to build the full suite of utilities:
+   or, to build the full suite of utilities:
 
     make all
 	
