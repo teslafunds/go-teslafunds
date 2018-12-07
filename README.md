@@ -73,12 +73,12 @@ the user doesn't care about years-old historical data, so we can fast-sync quick
 state of the network. To do so:
 
 ```
-$ geth --fast --cache=512 console
+$ gtsf --fast --cache=512 console
 ```
 
 This command will:
 
- * Start geth in fast sync mode (`--fast`), causing it to download more data in exchange for avoiding
+ * Start gtsf in fast sync mode (`--fast`), causing it to download more data in exchange for avoiding
    processing the entire history of the Ethereum network, which is very CPU intensive.
  * Bump the memory allowance of the database to 512MB (`--cache=512`), which can help significantly in
    sync times especially for HDD users. This flag is optional and you can set it as high or as low as
@@ -87,7 +87,7 @@ This command will:
    (via the trailing `console` subcommand) through which you can invoke all official [`web3` methods](https://github.com/ethereum/wiki/wiki/JavaScript-API)
    as well as 's own [management APIs](https://github.com/teslafunds/go-teslafunds/wiki/Management-APIs).
    This too is optional and if you leave it out you can always attach to an already running  instance
-   with `geth --attach`.
+   with `gtsf --attach`.
 
 ### Full node on the Teslafunds test network
 
@@ -97,7 +97,7 @@ entire system. In other words, instead of attaching to the main network, you wan
 network with your node, which is fully equivalent to the main network, but with play-Ether only.
 
 ```
-$ geth --testnet --fast --cache=512 console
+$ gtsf --testnet --fast --cache=512 console
 ```
 
 The `--fast`, `--cache` flags and `console` subcommand have the exact same meaning as above and they
@@ -194,7 +194,7 @@ With the genesis state defined in the above JSON file, you'll need to initialize
 with it prior to starting it up to ensure all blockchain parameters are correctly set:
 
 ```
-$ geth init path/to/genesis.json
+$ gtsf init path/to/genesis.json
 ```
 
 #### Creating the rendezvous point
@@ -223,7 +223,7 @@ via the `--bootnodes` flag. It will probably also be desirable to keep the data 
 private network separated, so do also specify a custom `--datadir` flag.
 
 ```
-$ geth --datadir=path/to/custom/data/folder --bootnodes=<bootnode-enode-url-from-above>
+$ gtsf --datadir=path/to/custom/data/folder --bootnodes=<bootnode-enode-url-from-above>
 ```
 
 *Note: Since your network will be completely cut off from the main and test networks, you'll also
@@ -242,7 +242,7 @@ resources (consider running on a single thread, no need for multiple ones either
 instance for mining, run it with all your usual flags, extended by:
 
 ```
-$ geth <usual-flags> --mine --minerthreads=1 --etherbase=0x0000000000000000000000000000000000000000
+$ gtsf <usual-flags> --mine --minerthreads=1 --etherbase=0x0000000000000000000000000000000000000000
 ```
 
 Which will start mining bocks and transactions on a single CPU thread, crediting all proceedings to
