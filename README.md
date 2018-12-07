@@ -15,11 +15,11 @@ For prerequisites and detailed build instructions please read the
 
 1. Building gtsf requires both a Go and a C compiler.
 
-    wget https://storage.googleapis.com/golang/go1.7.4.linux-amd64.tar.gz
-    sudo tar -zxvf go1.7.4.linux-amd64.tar.gz -C /usr/local/
-    export GOROOT=/usr/local/go
-    export GOPATH=$HOME/go
-    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+*    wget https://storage.googleapis.com/golang/go1.7.4.linux-amd64.tar.gz
+*    sudo tar -zxvf go1.7.4.linux-amd64.tar.gz -C /usr/local/
+*    export GOROOT=/usr/local/go
+*    export GOPATH=$HOME/go
+*    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 _______________________________________________________________________
 
