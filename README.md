@@ -25,15 +25,17 @@ _______________________________________________________________________
 
 2. Download source and build
 
-    git clone https://github.com/teslafunds/go-teslafunds.git
-    cd go-teslafunds
-    make
+*    git clone https://github.com/teslafunds/go-teslafunds.git
+*    cd go-teslafunds
+*    make
 
 _______________________________________________________________________
 
-3.   go-teslafunds/build/bin/gtsf
+3.   
 
 Once the dependencies are installed, run
+
+    go-teslafunds/build/bin/gtsf
 
     make gtsf
 
