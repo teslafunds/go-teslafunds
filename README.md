@@ -31,9 +31,7 @@ _______________________________________________________________________
 
 _______________________________________________________________________
 
-3.   
-
-Once the dependencies are installed, run
+3. Once the dependencies are installed, run
 
     make gtsf
 	
