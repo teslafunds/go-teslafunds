@@ -35,9 +35,10 @@ _______________________________________________________________________
 
 Once the dependencies are installed, run
 
-    go-teslafunds/build/bin/gtsf
-
     make gtsf
+	
+	./build/bin/gtsf
+
 
 or, to build the full suite of utilities:
 
