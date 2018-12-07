@@ -4,22 +4,35 @@
 
 The following builds are build automatically by our build servers after each push to the [develop](https://github.com/teslafunds/go-teslafunds/tree/develop) branch.
 
-* [Docker](https://registry.hub.docker.com/u/teslafunds/go-teslafunds/)
-* [OS X](http://build.ethdev.com/builds/OSX%20Go%20develop%20branch/Mist-OSX-latest.dmg)
-* Ubuntu
-  [trusty](https://build.ethdev.com/builds/Linux%20Go%20develop%20deb%20i386-trusty/latest/) |
-  [utopic](https://build.ethdev.com/builds/Linux%20Go%20develop%20deb%20i386-utopic/latest/)
-* [Windows 64-bit](https://build.ethdev.com/builds/Windows%20Go%20develop%20branch/Gtsf-Win64-latest.zip)
+
+* [Ubuntu (https://github.com/teslafunds/go-teslafunds/)
+* [Windows 64-bit](https://teslafunds.io/Gtsf-Win64-latest.zip)
 * [ARM](https://build.ethdev.com/builds/ARM%20Go%20develop%20branch/gtsf-ARM-latest.tar.bz2)
 
 ## Building the source
 
 For prerequisites and detailed build instructions please read the
-[Installation Instructions](https://github.com/teslafunds/go-teslafunds/wiki/Building-Teslafunds)
-on the wiki.
 
-Building gtsf requires both a Go and a C compiler.
-You can install them using your favourite package manager.
+1. Building gtsf requires both a Go and a C compiler.
+
+    wget https://storage.googleapis.com/golang/go1.7.4.linux-amd64.tar.gz
+    sudo tar -zxvf go1.7.4.linux-amd64.tar.gz -C /usr/local/
+    export GOROOT=/usr/local/go
+    export GOPATH=$HOME/go
+    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+_______________________________________________________________________
+
+2. Download source and build
+
+    git clone https://github.com/teslafunds/go-teslafunds.git
+    cd go-teslafunds
+    make
+
+_______________________________________________________________________
+
+3.   go-teslafunds/build/bin/gtsf
+
 Once the dependencies are installed, run
 
     make gtsf
@@ -27,6 +40,8 @@ Once the dependencies are installed, run
 or, to build the full suite of utilities:
 
     make all
+	
+_______________________________________________________________________
 
 ## Executables
 
