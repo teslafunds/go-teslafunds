@@ -22,7 +22,7 @@ import "github.com/teslafunds/go-teslafunds/p2p/discover"
 // the Frontier network.
 var FrontierBootNodes = []*discover.Node{
 	// TSF/DEV Go Bootnodes
-	discover.MustParseNode("enode://a9ac2213667c4b80278c7d235d831ab0520ca5de0fa1314c4cc6e51a1e9f936c907ffe72533ed68b54e3ec9423cda32377e9cfec85e97a8169f40e04a33631f0@185.206.145.206:39993"), //node1
+	discover.MustParseNode("enode://e43c7d4efbe46a870f309b80f88713c10e02f96b883322cfac1134f19c6cff85021c47084e5a534bb16b17bbac34b95fe624fbc050c09f7610653e54eefefe86@185.206.145.206:39993"), //node1
 	discover.MustParseNode("enode://d214d972eb0317471e5e7bfcdf42ada30030b02277476443c5dad61b97d4d00fdc79eeec1835e9962251c547d42f3c9342f768e3ae63e2c1782d75bbe9e72e07@185.141.62.215:39993"), //tsf b server
 	discover.MustParseNode("enode://a3cb002422cd9496a7c156940ee1b4caccbbd3cd7e34204ddb2cebdb72f5dd91b699082bd823f61bf05bc62b5c0ecfc2fc458fd4d20e5de6bfe8644d3212a275@78.46.67.207:39993"), //tsf europool me
 
