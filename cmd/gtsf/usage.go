@@ -60,7 +60,7 @@ type flagGroup struct {
 // AppHelpFlagGroups is the application flags, grouped by functionality.
 var AppHelpFlagGroups = []flagGroup{
 	{
-		Name: "DUBAICOIN",
+		Name: "TESLAFUNDS",
 		Flags: []cli.Flag{
 			utils.DataDirFlag,
 			utils.KeyStoreDirFlag,
