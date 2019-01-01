@@ -1928,7 +1928,7 @@ func (s *PublicBlockChainAPI) TraceCall(args CallArgs, blockNr rpc.BlockNumber) 
 	return &ExecutionResult{
 		Gas:         gas,
 		ReturnValue: fmt.Sprintf("%x", ret),
-		StructLogs: formatLogs(vmenv.StructLogs()),
+		StructLogs: formatLogs(logger.StructLogs()),
 	}, nil
 }
 
