@@ -1745,7 +1745,7 @@ func (api *PrivateDebugAPI) traceBlock(block *types.Block, logConfig *vm.LogConf
 	if err := validator.ValidateState(block, blockchain.GetBlock(block.ParentHash()), statedb, receipts, usedGas); err != nil {
 		return false, structLogger.StructLogs(), err
 	}
-	return true, collector.traces, nil
+	return true, structLogger.StructLogs(), nil
 }
 
 // SetHead rewinds the head of the blockchain to a previous block.
