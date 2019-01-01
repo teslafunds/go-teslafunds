@@ -13,9 +13,7 @@ tests/files/VMTests/RandomTests/*
 .tsftest
 */**/*tx_database*
 */**/*dapps*
-Godeps/_workspace/pkg
-Godeps/_workspace/bin
-
+build/_vendor/pkg
 #*
 .#*
 *#
@@ -26,14 +24,8 @@ Godeps/_workspace/bin
 # used by the Makefile
 /build/_workspace/
 /build/bin/
-/geth*.zip
+/gtsf*.zip
 
 # travis
 profile.tmp
 profile.cov
-
-.idea/workspace.xml
-*.idea/
-
-# vagrant
-.vagrant
