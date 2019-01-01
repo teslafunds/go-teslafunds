@@ -1817,7 +1817,7 @@ func formatError(err error) string {
 
 // TraceTransaction returns the structured logs created during the execution of EVM
 // and returns them as a JSON object.
-func (api *PrivateDebugAPI) TraceTransaction(txHash common.Hash, logConfig *vm.LogConfig) (*tsfapi.ExecutionResult, error) {
+func (api *PrivateDebugAPI) TraceTransaction(txHash common.Hash, logConfig *vm.LogConfig) (*ExecutionResult, error) {
 	logger := vm.NewStructLogger(logConfig)
 
 
