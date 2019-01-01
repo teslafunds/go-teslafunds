@@ -1921,7 +1921,7 @@ func (s *PublicBlockChainAPI) TraceCall(args CallArgs, blockNr rpc.BlockNumber) 
 	// Execute the call and return
 	vmenv := core.NewEnv(stateDb, s.config, s.bc, msg, block.Header(), vm.Config{
 		Debug: true,
-		logger := vm.NewStructLogger(logConfig),
+		Tracer: logger,
 	})
 	gp := new(core.GasPool).AddGas(common.MaxBig)
 
