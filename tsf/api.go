@@ -1919,15 +1919,16 @@ func (s *PublicBlockChainAPI) TraceCall(args CallArgs, blockNr rpc.BlockNumber) 
 	}
 
 	// Execute the call and return
-	vmenv := core.NewEnv(stateDb, s.config, s.bc, msg, block.Header(), vm.Config{Debug: true, Tracer: logger})
-
+	vmenv := core.NewEnv(stateDb, s.config, s.bc, msg, block.Header(), vm.Config{
+		Debug: true,
+	})
 	gp := new(core.GasPool).AddGas(common.MaxBig)
 
 	ret, gas, err := core.ApplyMessage(vmenv, msg, gp)
 	return &ExecutionResult{
 		Gas:         gas,
 		ReturnValue: fmt.Sprintf("%x", ret),
-		StructLogs: formatLogs(logger.StructLogs()),
+		StructLogs:  formatLogs(logger.StructLogs()),
 	}, nil
 }
 
