@@ -1,18 +1,18 @@
-// Copyright 2015 The go-teslafunds Authors
-// This file is part of the go-teslafunds library.
+// Copyright 2015 The go-ethereum Authors
+// This file is part of the go-ethereum library.
 //
-// The go-teslafunds library is free software: you can redistribute it and/or modify
+// The go-ethereum library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-teslafunds library is distributed in the hope that it will be useful,
+// The go-ethereum library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
 package abi
 
@@ -21,6 +21,7 @@ import (
 	"reflect"
 
 	"github.com/teslafunds/go-teslafunds/common"
+	"github.com/teslafunds/go-teslafunds/common/math"
 )
 
 var (
@@ -58,20 +59,7 @@ var (
 
 // U256 converts a big Int into a 256bit EVM number.
 func U256(n *big.Int) []byte {
-	return common.LeftPadBytes(common.U256(n).Bytes(), 32)
-}
-
-// packNum packs the given number (using the reflect value) and will cast it to appropriate number representation
-func packNum(value reflect.Value) []byte {
-	switch kind := value.Kind(); kind {
-	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-		return U256(new(big.Int).SetUint64(value.Uint()))
-	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return U256(big.NewInt(value.Int()))
-	case reflect.Ptr:
-		return U256(value.Interface().(*big.Int))
-	}
-	return nil
+	return math.PaddedBigBytes(math.U256(n), 32)
 }
 
 // checks whether the given reflect value is signed. This also works for slices with a number type

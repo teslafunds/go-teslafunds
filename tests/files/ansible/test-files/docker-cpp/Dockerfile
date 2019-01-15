@@ -10,7 +10,7 @@ RUN apt-get install -qy build-essential g4.8 git cmake libboost-all-dev libcurl4
 RUN apt-get install -qy automake unzip libgmp-dev libtool libleveldb-dev yasm libminiupnpc-dev libreadline-dev scons
 RUN apt-get install -qy libjsoncpp-dev libargtable2-dev
 
-+ACM- NCurses based GUI (not optional though for a succesful compilation, see https://github.com/teslafunds/cpp-teslafunds/issues/452 )
++ACM- NCurses based GUI (not optional though for a successful compilation, see https://github.com/teslafunds/cpp-teslafunds/issues/452 )
 RUN apt-get install -qy libncurses5-dev
 
 +ACM- Qt-based GUI

@@ -1,4 +1,4 @@
-// Copyright 2014 The go-ethereum Authors
+// Copyright 2015 The go-ethereum Authors
 // This file is part of the go-ethereum library.
 //
 // The go-ethereum library is free software: you can redistribute it and/or modify
@@ -16,22 +16,13 @@
 
 package core
 
-import (
-    "compress/gzip"
-    "encoding/base64"
-    "io"
-    "strings"
-)
-
-func NewDefaultGenesisReader() (io.Reader, error) {
-    return gzip.NewReader(base64.NewDecoder(base64.StdEncoding, strings.NewReader(defaultGenesisBlock)))
-}
-
-// defaultGenesisBlock is a gzip compressed dump of the official default Teslafunds
+// defaultGenesisBlock is a gzip compressed dump of the official default Ethereum
 // genesis block.
+const defaultGenesisBlock = "H4sICGn59VUAA2dlbmVzaXMuanNvbgCtUctqwzAQPDdfYXzOYSWvVlLOPfTQn1jJUmOwnRCr4BL871X8KKVQMLSrg9jXzGh0PxQ5yv7S+1CeihJGKZCURIEBHUYpyuMykpouDIm76zIGW/3Kt9CnFx7Oa+OPseGGMd34mRMvsEhakqBAjiJaXc25ygcpUr0tvfHw2nRNWnZEZczWqZsYG//epo8V7wdd14znf3+DvzS942F11lZ18OzA1xqVssYQRG0kexFMBCTvrA3Gfknmtr34vHqf07kEo3MWI/jgKimVllo5yZqtB4teVAHJOlRUPSjvRem45fVnxe9qi+n4nUI8bNVCAZmstnZ1hHyDRsOGhQ0IURph5X6KMhM8ZWQPWkUWIhrlaq6YHWciICmJOYKh7EX+3v3iN+Dd1u4ELqfZkOkwHT4BD678BCIDAAA="
 
-const ( defaultGenesisBlock = "H4sIAAAAAAAA/61Ry2rDMBA8x19hdM5BsrSWmluLCT3kJ1YruRH4EWIFXIL/PY4dh1BSaEvnppmd2UF7TtIRrGkb8myTMt7zR0ih2XoeiaH2XcT6MI+BKUyxhbdFPuDRN/Edu/2TmD9gyfV9PGKBEW+xC/+B3S7UIc60MPnrXXKhLAOdqvg5i+ZLZB36/b/3pDY0Frtnn/gDN1ZVS6P1PD0nivekx+YKlZAlmJwkeMrRKlFmYJ20qKzIufBw9aXMYoW3I8J324Z1slpdj6cBMiU1GZs5lC/IjQBwXmifGSXRGYsklftF8lR8SIYLarfa9lECAAA="
+// defaultTestnetGenesisBlock is a gzip compressed dump of the official default Ethereum
+// test network genesis block (currently Ropsten).
+const defaultTestnetGenesisBlock = "H4sICGn59VUAA2dlbmVzaXMuanNvbgCtUctqwzAQPDdfYXzOYSWvVlLOPfTQn1jJUmOwnRCr4BL871X8KKVQMLSrg9jXzGh0PxQ5yv7S+1CeihJGKZCURIEBHUYpyuMykpouDIm76zIGW/3Kt9CnFx7Oa+OPseGGMd34mRMvsEhakqBAjiJaXc25ygcpUr0tvfHw2nRNWnZEZczWqZsYG//epo8V7wdd14znf3+DvzS942F11lZ18OzA1xqVssYQRG0kexFMBCTvrA3Gfknmtr34vHqf07kEo3MWI/jgKimVllo5yZqtB4teVAHJOlRUPSjvRem45fVnxe9qi+n4nUI8bNVCAZmstnZ1hHyDRsOGhQ0IURph5X6KMhM8ZWQPWkUWIhrlaq6YHWciICmJOYKh7EX+3v3iN+Dd1u4ELqfZkOkwHT4BD678BCIDAAA="
 
-defaultTestnetGenesisBlock = defaultGenesisBlock
-
-)
+// defaultDevnetGenesisBlockis a gzip compressed dump of a dev Ethereum network genesis block.
+const defaultDevnetGenesisBlock = "H4sICGn59VUAA2dlbmVzaXMuanNvbgCtUctqwzAQPDdfYXzOYSWvVlLOPfTQn1jJUmOwnRCr4BL871X8KKVQMLSrg9jXzGh0PxQ5yv7S+1CeihJGKZCURIEBHUYpyuMykpouDIm76zIGW/3Kt9CnFx7Oa+OPseGGMd34mRMvsEhakqBAjiJaXc25ygcpUr0tvfHw2nRNWnZEZczWqZsYG//epo8V7wdd14znf3+DvzS942F11lZ18OzA1xqVssYQRG0kexFMBCTvrA3Gfknmtr34vHqf07kEo3MWI/jgKimVllo5yZqtB4teVAHJOlRUPSjvRem45fVnxe9qi+n4nUI8bNVCAZmstnZ1hHyDRsOGhQ0IURph5X6KMhM8ZWQPWkUWIhrlaq6YHWciICmJOYKh7EX+3v3iN+Dd1u4ELqfZkOkwHT4BD678BCIDAAA="

@@ -1,58 +1,71 @@
-// Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
-// This file is part of the go-teslafunds library.
+// Copyright 2014 The go-ethereum Authors
+// This file is part of the go-ethereum library.
 //
-// The go-teslafunds library is free software: you can redistribute it and/or modify
+// The go-ethereum library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-teslafunds library is distributed in the hope that it will be useful,
+// The go-ethereum library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package miner implements Teslafunds block creation and mining.
+// Package miner implements Ethereum block creation and mining.
 package miner
 
 import (
 	"fmt"
-	"math/big"
 	"sync/atomic"
 
+	"github.com/teslafunds/go-teslafunds/accounts"
 	"github.com/teslafunds/go-teslafunds/common"
+	"github.com/teslafunds/go-teslafunds/consensus"
 	"github.com/teslafunds/go-teslafunds/core"
 	"github.com/teslafunds/go-teslafunds/core/state"
 	"github.com/teslafunds/go-teslafunds/core/types"
-	"github.com/teslafunds/go-teslafunds/tsf/downloader"
+	"github.com/teslafunds/go-teslafunds/eth/downloader"
+	"github.com/teslafunds/go-teslafunds/ethdb"
 	"github.com/teslafunds/go-teslafunds/event"
-	"github.com/teslafunds/go-teslafunds/logger"
-	"github.com/teslafunds/go-teslafunds/logger/glog"
+	"github.com/teslafunds/go-teslafunds/log"
 	"github.com/teslafunds/go-teslafunds/params"
-	"github.com/teslafunds/go-teslafunds/pow"
 )
 
+// Backend wraps all methods required for mining.
+type Backend interface {
+	AccountManager() *accounts.Manager
+	BlockChain() *core.BlockChain
+	TxPool() *core.TxPool
+	ChainDb() ethdb.Database
+}
+
+// Miner creates blocks and searches for proof-of-work values.
 type Miner struct {
 	mux *event.TypeMux
 
 	worker *worker
 
-	MinAcceptedGasPrice *big.Int
-
-	threads  int
 	coinbase common.Address
 	mining   int32
-	tsf      core.Backend
-	pow      pow.PoW
+	eth      Backend
+	engine   consensus.Engine
 
 	canStart    int32 // can start indicates whether we can start the mining operation
 	shouldStart int32 // should start indicates whether we should start after sync
 }
 
-func New(tsf core.Backend, config *core.ChainConfig, mux *event.TypeMux, pow pow.PoW) *Miner {
-	miner := &Miner{tsf: tsf, mux: mux, pow: pow, worker: newWorker(config, common.Address{}, tsf), canStart: 1}
+func New(eth Backend, config *params.ChainConfig, mux *event.TypeMux, engine consensus.Engine) *Miner {
+	miner := &Miner{
+		eth:      eth,
+		mux:      mux,
+		engine:   engine,
+		worker:   newWorker(config, engine, common.Address{}, eth, mux),
+		canStart: 1,
+	}
+	miner.Register(NewCpuAgent(eth.BlockChain(), engine))
 	go miner.update()
 
 	return miner
@@ -72,7 +85,7 @@ out:
 			if self.Mining() {
 				self.Stop()
 				atomic.StoreInt32(&self.shouldStart, 1)
-				glog.V(logger.Info).Infoln("Mining operation aborted due to sync operation")
+				log.Info("Mining aborted due to sync")
 			}
 		case downloader.DoneEvent, downloader.FailedEvent:
 			shouldStart := atomic.LoadInt32(&self.shouldStart) == 1
@@ -80,7 +93,7 @@ out:
 			atomic.StoreInt32(&self.canStart, 1)
 			atomic.StoreInt32(&self.shouldStart, 0)
 			if shouldStart {
-				self.Start(self.coinbase, self.threads)
+				self.Start(self.coinbase)
 			}
 			// unsubscribe. we're only interested in this event once
 			events.Unsubscribe()
@@ -90,36 +103,19 @@ out:
 	}
 }
 
-func (m *Miner) SetGasPrice(price *big.Int) {
-	// FIXME block tests set a nil gas price. Quick dirty fix
-	if price == nil {
-		return
-	}
-
-	m.worker.setGasPrice(price)
-}
-
-func (self *Miner) Start(coinbase common.Address, threads int) {
+func (self *Miner) Start(coinbase common.Address) {
 	atomic.StoreInt32(&self.shouldStart, 1)
-	self.threads = threads
-	self.worker.coinbase = coinbase
+	self.worker.setEtherbase(coinbase)
 	self.coinbase = coinbase
 
 	if atomic.LoadInt32(&self.canStart) == 0 {
-		glog.V(logger.Info).Infoln("Can not start mining operation due to network sync (starts when finished)")
+		log.Info("Network syncing, will start miner afterwards")
 		return
 	}
-
 	atomic.StoreInt32(&self.mining, 1)
 
-	for i := 0; i < threads; i++ {
-		self.worker.register(NewCpuAgent(i, self.pow))
-	}
-
-	glog.V(logger.Info).Infof("Starting mining operation (CPU=%d TOT=%d)\n", threads, len(self.worker.agents))
-
+	log.Info("Starting mining operation")
 	self.worker.start()
-
 	self.worker.commitNewWork()
 }
 
@@ -145,28 +141,40 @@ func (self *Miner) Mining() bool {
 }
 
 func (self *Miner) HashRate() (tot int64) {
-	tot += self.pow.GetHashrate()
+	if pow, ok := self.engine.(consensus.PoW); ok {
+		tot += int64(pow.Hashrate())
+	}
 	// do we care this might race? is it worth we're rewriting some
 	// aspects of the worker/locking up agents so we can get an accurate
 	// hashrate?
 	for agent := range self.worker.agents {
-		tot += agent.GetHashRate()
+		if _, ok := agent.(*CpuAgent); !ok {
+			tot += agent.GetHashRate()
+		}
 	}
 	return
 }
 
 func (self *Miner) SetExtra(extra []byte) error {
-	if uint64(len(extra)) > params.MaximumExtraDataSize.Uint64() {
+	if uint64(len(extra)) > params.MaximumExtraDataSize {
 		return fmt.Errorf("Extra exceeds max length. %d > %v", len(extra), params.MaximumExtraDataSize)
 	}
-
-	self.worker.extra = extra
+	self.worker.setExtra(extra)
 	return nil
 }
 
 // Pending returns the currently pending block and associated state.
 func (self *Miner) Pending() (*types.Block, *state.StateDB) {
 	return self.worker.pending()
+}
+
+// PendingBlock returns the currently pending block.
+//
+// Note, to access both the pending block and the pending state
+// simultaneously, please use Pending(), as the pending state can
+// change between multiple method calls
+func (self *Miner) PendingBlock() *types.Block {
+	return self.worker.pendingBlock()
 }
 
 func (self *Miner) SetEtherbase(addr common.Address) {

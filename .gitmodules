@@ -1,3 +1,3 @@
-[submodule "cmd/mist/assets/ext/teslafunds.js"]
-	path = cmd/mist/assets/ext/teslafunds.js
-	url = https://github.com/teslafunds/web3.js
+[submodule "tests"]
+	path = tests/testdata
+	url = https://github.com/ethereum/tests

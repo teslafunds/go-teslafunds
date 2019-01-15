@@ -29,7 +29,7 @@ import (
 
 func newEmptySecure() *SecureTrie {
 	db, _ := ethdb.NewMemDatabase()
-	trie, _ := NewSecure(common.Hash{}, db)
+	trie, _ := NewSecure(common.Hash{}, db, 0)
 	return trie
 }
 
@@ -37,7 +37,7 @@ func newEmptySecure() *SecureTrie {
 func makeTestSecureTrie() (ethdb.Database, *SecureTrie, map[string][]byte) {
 	// Create an empty trie
 	db, _ := ethdb.NewMemDatabase()
-	trie, _ := NewSecure(common.Hash{}, db)
+	trie, _ := NewSecure(common.Hash{}, db, 0)
 
 	// Fill it with some arbitrary data
 	content := make(map[string][]byte)
@@ -51,7 +51,7 @@ func makeTestSecureTrie() (ethdb.Database, *SecureTrie, map[string][]byte) {
 		content[string(key)] = val
 		trie.Update(key, val)
 
-		// Add some other data to inflate th trie
+		// Add some other data to inflate the trie
 		for j := byte(3); j < 13; j++ {
 			key, val = common.LeftPadBytes([]byte{j, i}, 32), []byte{j, i}
 			content[string(key)] = val

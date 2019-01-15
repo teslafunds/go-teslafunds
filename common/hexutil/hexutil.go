@@ -1,18 +1,18 @@
-// Copyright 2016 The go-teslafunds Authors
-// This file is part of the go-teslafunds library.
+// Copyright 2016 The go-ethereum Authors
+// This file is part of the go-ethereum library.
 //
-// The go-teslafunds library is free software: you can redistribute it and/or modify
+// The go-ethereum library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-teslafunds library is distributed in the hope that it will be useful,
+// The go-ethereum library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
 /*
 Package hexutil implements hex encoding with 0x prefix.
@@ -32,7 +32,6 @@ package hexutil
 
 import (
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"math/big"
 	"strconv"
@@ -41,16 +40,22 @@ import (
 const uintBits = 32 << (uint64(^uint(0)) >> 63)
 
 var (
-	ErrEmptyString   = errors.New("empty hex string")
-	ErrMissingPrefix = errors.New("missing 0x prefix for hex data")
-	ErrSyntax        = errors.New("invalid hex")
-	ErrEmptyNumber   = errors.New("hex number has no digits after 0x")
-	ErrLeadingZero   = errors.New("hex number has leading zero digits after 0x")
-	ErrOddLength     = errors.New("hex string has odd length")
-	ErrUint64Range   = errors.New("hex number does not fit into 64 bits")
-	ErrUintRange     = fmt.Errorf("hex number does not fit into %d bits", uintBits)
-	ErrBig256Range   = errors.New("hex number does not fit into 256 bits")
+	ErrEmptyString   = &decError{"empty hex string"}
+	ErrSyntax        = &decError{"invalid hex string"}
+	ErrMissingPrefix = &decError{"hex string without 0x prefix"}
+	ErrOddLength     = &decError{"hex string of odd length"}
+	ErrEmptyNumber   = &decError{"hex string \"0x\""}
+	ErrLeadingZero   = &decError{"hex number with leading zero digits"}
+	ErrUint64Range   = &decError{"hex number > 64 bits"}
+	ErrUintRange     = &decError{fmt.Sprintf("hex number > %d bits", uintBits)}
+	ErrBig256Range   = &decError{"hex number > 256 bits"}
 )
+
+type decError struct{ msg string }
+
+func (err decError) Error() string {
+	return string(err.msg)
+}
 
 // Decode decodes a hex string with 0x prefix.
 func Decode(input string) ([]byte, error) {

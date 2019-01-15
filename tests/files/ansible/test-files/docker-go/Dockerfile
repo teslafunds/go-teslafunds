@@ -42,6 +42,6 @@ RUN git pull
 
 
 RUN ETH_DEPS=$(go list -f '{{.Imports}} {{.TestImports}} {{.XTestImports}}' github.com/teslafunds/go-teslafunds/... | sed -e 's/\[//g' | sed -e 's/\]//g' | sed -e 's/C //g'); if [ "$ETH_DEPS" ]; then go get $ETH_DEPS; fi
-RUN go install -v ./cmd/exptest
+RUN go install -v ./cmd/ethtest
 
-ENTRYPOINT ["exptest"]
+ENTRYPOINT ["ethtest"]

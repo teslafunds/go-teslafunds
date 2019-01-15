@@ -14,13 +14,11 @@ As a subdirectory the main go-teslafunds repository, you get it with
 
 ## RLP (Recursive Linear Prefix) Encoding
 
+RLP Encoding is an encoding scheme used by the Teslafunds project. It
+encodes any native value or list to a string.
 
-RLP Encoding is an encoding scheme utilized by the Teslafunds project. It
-encodes any native value or list to string.
-
-More in depth information about the Encoding scheme see the [Wiki](http://wiki.teslafunds.org/index.php/RLP)
-article.
-
+More in depth information about the encoding scheme see the
+[Wiki](http://wiki.teslafunds.tech/index.php/RLP) article.
 
 ```go
 rlp := common.Encode("doge")
@@ -34,11 +32,10 @@ fmt.Println(decoded) // => ["dog" "cat"]
 
 ## Patricia Trie
 
-Patricie Tree is a merkle tree utilized by the Teslafunds project.
-
+Patricie Tree is a merkle trie used by the Teslafunds project.
 
 More in depth information about the (modified) Patricia Trie can be
-found on the [Wiki](http://wiki.teslafunds.org/index.php/Patricia_Tree).
+found on the [Wiki](http://wiki.teslafunds.tech/index.php/Patricia_Tree).
 
 The patricia trie uses a db as backend and could be anything as long as
 it satisfies the Database interface found in `common/db.go`.

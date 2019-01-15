@@ -1,18 +1,18 @@
-// Copyright 2015 The go-teslafunds Authors
-// This file is part of go-teslafunds.
+// Copyright 2015 The go-ethereum Authors
+// This file is part of go-ethereum.
 //
-// go-teslafunds is free software: you can redistribute it and/or modify
+// go-ethereum is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-teslafunds is distributed in the hope that it will be useful,
+// go-ethereum is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-teslafunds. If not, see <http://www.gnu.org/licenses/>.
+// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
 // rlpdump is a pretty-printer for RLP data.
 package main
@@ -32,6 +32,7 @@ import (
 var (
 	hexMode = flag.String("hex", "", "dump given hex data")
 	noASCII = flag.Bool("noascii", false, "don't print ASCII strings readably")
+	single  = flag.Bool("single", false, "print only the first element, discard the rest")
 )
 
 func init() {
@@ -82,6 +83,9 @@ func main() {
 			break
 		}
 		fmt.Println()
+		if *single {
+			break
+		}
 	}
 }
 

@@ -1,18 +1,18 @@
-// Copyright 2016 The go-teslafunds Authors
-// This file is part of the go-teslafunds library.
+// Copyright 2016 The go-ethereum Authors
+// This file is part of the go-ethereum library.
 //
-// The go-teslafunds library is free software: you can redistribute it and/or modify
+// The go-ethereum library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-teslafunds library is distributed in the hope that it will be useful,
+// The go-ethereum library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
 package hexutil
 
@@ -62,12 +62,12 @@ var errJSONEOF = errors.New("unexpected end of JSON input")
 var unmarshalBytesTests = []unmarshalTest{
 	// invalid encoding
 	{input: "", wantErr: errJSONEOF},
-	{input: "null", wantErr: errNonString},
-	{input: "10", wantErr: errNonString},
-	{input: `"0"`, wantErr: ErrMissingPrefix},
-	{input: `"0x0"`, wantErr: ErrOddLength},
-	{input: `"0xxx"`, wantErr: ErrSyntax},
-	{input: `"0x01zz01"`, wantErr: ErrSyntax},
+	{input: "null", wantErr: errNonString(bytesT)},
+	{input: "10", wantErr: errNonString(bytesT)},
+	{input: `"0"`, wantErr: wrapTypeError(ErrMissingPrefix, bytesT)},
+	{input: `"0x0"`, wantErr: wrapTypeError(ErrOddLength, bytesT)},
+	{input: `"0xxx"`, wantErr: wrapTypeError(ErrSyntax, bytesT)},
+	{input: `"0x01zz01"`, wantErr: wrapTypeError(ErrSyntax, bytesT)},
 
 	// valid encoding
 	{input: `""`, want: referenceBytes("")},
@@ -127,16 +127,16 @@ func TestMarshalBytes(t *testing.T) {
 var unmarshalBigTests = []unmarshalTest{
 	// invalid encoding
 	{input: "", wantErr: errJSONEOF},
-	{input: "null", wantErr: errNonString},
-	{input: "10", wantErr: errNonString},
-	{input: `"0"`, wantErr: ErrMissingPrefix},
-	{input: `"0x"`, wantErr: ErrEmptyNumber},
-	{input: `"0x01"`, wantErr: ErrLeadingZero},
-	{input: `"0xx"`, wantErr: ErrSyntax},
-	{input: `"0x1zz01"`, wantErr: ErrSyntax},
+	{input: "null", wantErr: errNonString(bigT)},
+	{input: "10", wantErr: errNonString(bigT)},
+	{input: `"0"`, wantErr: wrapTypeError(ErrMissingPrefix, bigT)},
+	{input: `"0x"`, wantErr: wrapTypeError(ErrEmptyNumber, bigT)},
+	{input: `"0x01"`, wantErr: wrapTypeError(ErrLeadingZero, bigT)},
+	{input: `"0xx"`, wantErr: wrapTypeError(ErrSyntax, bigT)},
+	{input: `"0x1zz01"`, wantErr: wrapTypeError(ErrSyntax, bigT)},
 	{
 		input:   `"0x10000000000000000000000000000000000000000000000000000000000000000"`,
-		wantErr: ErrBig256Range,
+		wantErr: wrapTypeError(ErrBig256Range, bigT),
 	},
 
 	// valid encoding
@@ -208,14 +208,14 @@ func TestMarshalBig(t *testing.T) {
 var unmarshalUint64Tests = []unmarshalTest{
 	// invalid encoding
 	{input: "", wantErr: errJSONEOF},
-	{input: "null", wantErr: errNonString},
-	{input: "10", wantErr: errNonString},
-	{input: `"0"`, wantErr: ErrMissingPrefix},
-	{input: `"0x"`, wantErr: ErrEmptyNumber},
-	{input: `"0x01"`, wantErr: ErrLeadingZero},
-	{input: `"0xfffffffffffffffff"`, wantErr: ErrUint64Range},
-	{input: `"0xx"`, wantErr: ErrSyntax},
-	{input: `"0x1zz01"`, wantErr: ErrSyntax},
+	{input: "null", wantErr: errNonString(uint64T)},
+	{input: "10", wantErr: errNonString(uint64T)},
+	{input: `"0"`, wantErr: wrapTypeError(ErrMissingPrefix, uint64T)},
+	{input: `"0x"`, wantErr: wrapTypeError(ErrEmptyNumber, uint64T)},
+	{input: `"0x01"`, wantErr: wrapTypeError(ErrLeadingZero, uint64T)},
+	{input: `"0xfffffffffffffffff"`, wantErr: wrapTypeError(ErrUint64Range, uint64T)},
+	{input: `"0xx"`, wantErr: wrapTypeError(ErrSyntax, uint64T)},
+	{input: `"0x1zz01"`, wantErr: wrapTypeError(ErrSyntax, uint64T)},
 
 	// valid encoding
 	{input: `""`, want: uint64(0)},
@@ -298,15 +298,15 @@ var (
 var unmarshalUintTests = []unmarshalTest{
 	// invalid encoding
 	{input: "", wantErr: errJSONEOF},
-	{input: "null", wantErr: errNonString},
-	{input: "10", wantErr: errNonString},
-	{input: `"0"`, wantErr: ErrMissingPrefix},
-	{input: `"0x"`, wantErr: ErrEmptyNumber},
-	{input: `"0x01"`, wantErr: ErrLeadingZero},
-	{input: `"0x100000000"`, want: uint(maxUint33bits), wantErr32bit: ErrUintRange},
-	{input: `"0xfffffffffffffffff"`, wantErr: ErrUintRange},
-	{input: `"0xx"`, wantErr: ErrSyntax},
-	{input: `"0x1zz01"`, wantErr: ErrSyntax},
+	{input: "null", wantErr: errNonString(uintT)},
+	{input: "10", wantErr: errNonString(uintT)},
+	{input: `"0"`, wantErr: wrapTypeError(ErrMissingPrefix, uintT)},
+	{input: `"0x"`, wantErr: wrapTypeError(ErrEmptyNumber, uintT)},
+	{input: `"0x01"`, wantErr: wrapTypeError(ErrLeadingZero, uintT)},
+	{input: `"0x100000000"`, want: uint(maxUint33bits), wantErr32bit: wrapTypeError(ErrUintRange, uintT)},
+	{input: `"0xfffffffffffffffff"`, wantErr: wrapTypeError(ErrUintRange, uintT)},
+	{input: `"0xx"`, wantErr: wrapTypeError(ErrSyntax, uintT)},
+	{input: `"0x1zz01"`, wantErr: wrapTypeError(ErrSyntax, uintT)},
 
 	// valid encoding
 	{input: `""`, want: uint(0)},
@@ -317,7 +317,7 @@ var unmarshalUintTests = []unmarshalTest{
 	{input: `"0x1122aaff"`, want: uint(0x1122aaff)},
 	{input: `"0xbbb"`, want: uint(0xbbb)},
 	{input: `"0xffffffff"`, want: uint(0xffffffff)},
-	{input: `"0xffffffffffffffff"`, want: uint(maxUint64bits), wantErr32bit: ErrUintRange},
+	{input: `"0xffffffffffffffff"`, want: uint(maxUint64bits), wantErr32bit: wrapTypeError(ErrUintRange, uintT)},
 }
 
 func TestUnmarshalUint(t *testing.T) {
@@ -334,6 +334,41 @@ func TestUnmarshalUint(t *testing.T) {
 		if uint(v) != test.want.(uint) {
 			t.Errorf("input %s: value mismatch: got %d, want %d", test.input, v, test.want)
 			continue
+		}
+	}
+}
+
+func TestUnmarshalFixedUnprefixedText(t *testing.T) {
+	tests := []struct {
+		input   string
+		want    []byte
+		wantErr error
+	}{
+		{input: "0x2", wantErr: ErrOddLength},
+		{input: "2", wantErr: ErrOddLength},
+		{input: "4444", wantErr: errors.New("hex string has length 4, want 8 for x")},
+		{input: "4444", wantErr: errors.New("hex string has length 4, want 8 for x")},
+		// check that output is not modified for partially correct input
+		{input: "444444gg", wantErr: ErrSyntax, want: []byte{0, 0, 0, 0}},
+		{input: "0x444444gg", wantErr: ErrSyntax, want: []byte{0, 0, 0, 0}},
+		// valid inputs
+		{input: "44444444", want: []byte{0x44, 0x44, 0x44, 0x44}},
+		{input: "0x44444444", want: []byte{0x44, 0x44, 0x44, 0x44}},
+	}
+
+	for _, test := range tests {
+		out := make([]byte, 4)
+		err := UnmarshalFixedUnprefixedText("x", []byte(test.input), out)
+		switch {
+		case err == nil && test.wantErr != nil:
+			t.Errorf("%q: got no error, expected %q", test.input, test.wantErr)
+		case err != nil && test.wantErr == nil:
+			t.Errorf("%q: unexpected error %q", test.input, err)
+		case err != nil && err.Error() != test.wantErr.Error():
+			t.Errorf("%q: error mismatch: got %q, want %q", test.input, err, test.wantErr)
+		}
+		if test.want != nil && !bytes.Equal(out, test.want) {
+			t.Errorf("%q: output mismatch: got %x, want %x", test.input, out, test.want)
 		}
 	}
 }

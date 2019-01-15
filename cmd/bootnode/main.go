@@ -1,67 +1,74 @@
-// Copyright 2015 The go-teslafunds Authors
-// This file is part of go-teslafunds.
+// Copyright 2015 The go-ethereum Authors
+// This file is part of go-ethereum.
 //
-// go-teslafunds is free software: you can redistribute it and/or modify
+// go-ethereum is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// go-teslafunds is distributed in the hope that it will be useful,
+// go-ethereum is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with go-teslafunds. If not, see <http://www.gnu.org/licenses/>.
+// along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-// bootnode runs a bootstrap node for the Teslafunds Discovery Protocol.
+// bootnode runs a bootstrap node for the Ethereum Discovery Protocol.
 package main
 
 import (
 	"crypto/ecdsa"
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/teslafunds/go-teslafunds/cmd/utils"
 	"github.com/teslafunds/go-teslafunds/crypto"
-	"github.com/teslafunds/go-teslafunds/logger/glog"
+	"github.com/teslafunds/go-teslafunds/log"
 	"github.com/teslafunds/go-teslafunds/p2p/discover"
+	"github.com/teslafunds/go-teslafunds/p2p/discv5"
 	"github.com/teslafunds/go-teslafunds/p2p/nat"
-
+	"github.com/teslafunds/go-teslafunds/p2p/netutil"
 )
 
 func main() {
 	var (
-		listenAddr  = flag.String("addr", ":57956", "listen address")
-		genKey      = flag.String("genkey", "", "generate a node key and quit")
+		listenAddr  = flag.String("addr", ":30301", "listen address")
+		genKey      = flag.String("genkey", "", "generate a node key")
+		writeAddr   = flag.Bool("writeaddress", false, "write out the node's pubkey hash and quit")
 		nodeKeyFile = flag.String("nodekey", "", "private key filename")
 		nodeKeyHex  = flag.String("nodekeyhex", "", "private key as hex (for testing)")
 		natdesc     = flag.String("nat", "none", "port mapping mechanism (any|none|upnp|pmp|extip:<IP>)")
+		netrestrict = flag.String("netrestrict", "", "restrict network communication to the given IP networks (CIDR masks)")
+		runv5       = flag.Bool("v5", false, "run a v5 topic discovery bootnode")
+		verbosity   = flag.Int("verbosity", int(log.LvlInfo), "log verbosity (0-9)")
+		vmodule     = flag.String("vmodule", "", "log verbosity pattern")
 
 		nodeKey *ecdsa.PrivateKey
 		err     error
 	)
-	flag.Var(glog.GetVerbosity(), "verbosity", "log verbosity (0-9)")
-	flag.Var(glog.GetVModule(), "vmodule", "log verbosity pattern")
-	glog.SetToStderr(true)
 	flag.Parse()
 
-	if *genKey != "" {
-		key, err := crypto.GenerateKey()
-		if err != nil {
-			utils.Fatalf("could not generate key: %v", err)
-		}
-		if err := crypto.SaveECDSA(*genKey, key); err != nil {
-			utils.Fatalf("%v", err)
-		}
-		os.Exit(0)
-	}
+	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
+	glogger.Verbosity(log.Lvl(*verbosity))
+	glogger.Vmodule(*vmodule)
+	log.Root().SetHandler(glogger)
 
 	natm, err := nat.Parse(*natdesc)
 	if err != nil {
 		utils.Fatalf("-nat: %v", err)
 	}
 	switch {
+	case *genKey != "":
+		nodeKey, err = crypto.GenerateKey()
+		if err != nil {
+			utils.Fatalf("could not generate key: %v", err)
+		}
+		if err = crypto.SaveECDSA(*genKey, nodeKey); err != nil {
+			utils.Fatalf("%v", err)
+		}
+		return
 	case *nodeKeyFile == "" && *nodeKeyHex == "":
 		utils.Fatalf("Use -nodekey or -nodekeyhex to specify a private key")
 	case *nodeKeyFile != "" && *nodeKeyHex != "":
@@ -76,8 +83,28 @@ func main() {
 		}
 	}
 
-	if _, err := discover.ListenUDP(nodeKey, *listenAddr, natm, ""); err != nil {
-		utils.Fatalf("%v", err)
+	if *writeAddr {
+		fmt.Printf("%v\n", discover.PubkeyID(&nodeKey.PublicKey))
+		os.Exit(0)
 	}
+
+	var restrictList *netutil.Netlist
+	if *netrestrict != "" {
+		restrictList, err = netutil.ParseNetlist(*netrestrict)
+		if err != nil {
+			utils.Fatalf("-netrestrict: %v", err)
+		}
+	}
+
+	if *runv5 {
+		if _, err := discv5.ListenUDP(nodeKey, *listenAddr, natm, "", restrictList); err != nil {
+			utils.Fatalf("%v", err)
+		}
+	} else {
+		if _, err := discover.ListenUDP(nodeKey, *listenAddr, natm, "", restrictList); err != nil {
+			utils.Fatalf("%v", err)
+		}
+	}
+
 	select {}
 }

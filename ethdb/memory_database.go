@@ -1,18 +1,18 @@
-// Copyright 2014 The go-ethereum Authors && Copyright 2015 go-teslafunds Authors
-// This file is part of the go-teslafunds library.
+// Copyright 2014 The go-ethereum Authors
+// This file is part of the go-ethereum library.
 //
-// The go-teslafunds library is free software: you can redistribute it and/or modify
+// The go-ethereum library is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// The go-teslafunds library is distributed in the hope that it will be useful,
+// The go-ethereum library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with the go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
+// along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
 package ethdb
 
@@ -45,11 +45,12 @@ func (db *MemDatabase) Put(key []byte, value []byte) error {
 	return nil
 }
 
-func (db *MemDatabase) Set(key []byte, value []byte) {
-	db.lock.Lock()
-	defer db.lock.Unlock()
+func (db *MemDatabase) Has(key []byte) (bool, error) {
+	db.lock.RLock()
+	defer db.lock.RUnlock()
 
-	db.Put(key, value)
+	_, ok := db.db[string(key)]
+	return ok, nil
 }
 
 func (db *MemDatabase) Get(key []byte) ([]byte, error) {
@@ -57,7 +58,7 @@ func (db *MemDatabase) Get(key []byte) ([]byte, error) {
 	defer db.lock.RUnlock()
 
 	if entry, ok := db.db[string(key)]; ok {
-		return entry, nil
+		return common.CopyBytes(entry), nil
 	}
 	return nil, errors.New("not found")
 }
@@ -67,7 +68,7 @@ func (db *MemDatabase) Keys() [][]byte {
 	defer db.lock.RUnlock()
 
 	keys := [][]byte{}
-	for key, _ := range db.db {
+	for key := range db.db {
 		keys = append(keys, []byte(key))
 	}
 	return keys
@@ -100,21 +101,16 @@ type kv struct{ k, v []byte }
 type memBatch struct {
 	db     *MemDatabase
 	writes []kv
-	lock   sync.RWMutex
+	size   int
 }
 
 func (b *memBatch) Put(key, value []byte) error {
-	b.lock.Lock()
-	defer b.lock.Unlock()
-
 	b.writes = append(b.writes, kv{common.CopyBytes(key), common.CopyBytes(value)})
+	b.size += len(value)
 	return nil
 }
 
 func (b *memBatch) Write() error {
-	b.lock.RLock()
-	defer b.lock.RUnlock()
-
 	b.db.lock.Lock()
 	defer b.db.lock.Unlock()
 
@@ -122,4 +118,8 @@ func (b *memBatch) Write() error {
 		b.db.db[string(kv.k)] = kv.v
 	}
 	return nil
+}
+
+func (b *memBatch) ValueSize() int {
+	return b.size
 }

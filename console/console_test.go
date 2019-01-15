@@ -21,14 +21,11 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"math/big"
 	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/teslafunds/go-teslafunds/accounts"
 	"github.com/teslafunds/go-teslafunds/common"
 	"github.com/teslafunds/go-teslafunds/core"
 	"github.com/teslafunds/go-teslafunds/eth"
@@ -80,8 +77,6 @@ type tester struct {
 	console   *Console
 	input     *hookedPrompter
 	output    *bytes.Buffer
-
-	lastConfirm string
 }
 
 // newTester creates a test environment based on which the console can operate.
@@ -92,24 +87,22 @@ func newTester(t *testing.T, confOverride func(*eth.Config)) *tester {
 	if err != nil {
 		t.Fatalf("failed to create temporary keystore: %v", err)
 	}
-	accman := accounts.NewPlaintextManager(filepath.Join(workspace, "keystore"))
 
 	// Create a networkless protocol stack and start an Ethereum service within
-	stack, err := node.New(&node.Config{DataDir: workspace, Name: testInstance, NoDiscovery: true})
+	stack, err := node.New(&node.Config{DataDir: workspace, UseLightweightKDF: true, Name: testInstance})
 	if err != nil {
 		t.Fatalf("failed to create node: %v", err)
 	}
-	tsfConf := &eth.Config{
-		ChainConfig:    &core.ChainConfig{HomesteadBlock: new(big.Int)},
-		Etherbase:      common.HexToAddress(testAddress),
-		AccountManager: accman,
-		PowTest:        true,
+	ethConf := &eth.Config{
+		Genesis:   core.DevGenesisBlock(),
+		Etherbase: common.HexToAddress(testAddress),
+		PowTest:   true,
 	}
 	if confOverride != nil {
-		confOverride(tsfConf)
+		confOverride(ethConf)
 	}
-	if err = stack.Register(func(ctx *node.ServiceContext) (node.Service, error) { return eth.New(ctx, tsfConf) }); err != nil {
-		t.Fatalf("failed to register Ethereum protocol: %v", err)
+	if err = stack.Register(func(ctx *node.ServiceContext) (node.Service, error) { return eth.New(ctx, ethConf) }); err != nil {
+		t.Fatalf("failed to register Teslafunds protocol: %v", err)
 	}
 	// Start the node and assemble the JavaScript console around it
 	if err = stack.Start(); err != nil {
