@@ -13,7 +13,7 @@ PageEx license
 PageExEnd
 
 # Install gtsf binary
-Section "Gexp" GETH_IDX
+Section "Gtsf" GETH_IDX
   SetOutPath $INSTDIR
   file {{.Gexp}}
 

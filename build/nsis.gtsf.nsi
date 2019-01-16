@@ -30,7 +30,7 @@
 CRCCheck on
 
 !define GROUPNAME "Teslafunds"
-!define APPNAME "Gexp"
+!define APPNAME "Gtsf"
 !define DESCRIPTION "Official Go implementation of the Teslafunds protocol"
 !addplugindir .\
 

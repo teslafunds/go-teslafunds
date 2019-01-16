@@ -665,7 +665,7 @@ func doWindowsInstaller(cmdline []string) {
 	// first section contains the gtsf binary, second section holds the dev tools.
 	templateData := map[string]interface{}{
 		"License":  "COPYING",
-		"Gexp":     gethTool,
+		"Gtsf":     gethTool,
 		"DevTools": devTools,
 	}
 	build.Render("build/nsis.gtsf.nsi", filepath.Join(*workdir, "gtsf.nsi"), 0644, nil)
