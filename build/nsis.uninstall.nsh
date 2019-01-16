@@ -17,9 +17,9 @@ Section "Uninstall"
   rmDir "$SMPROGRAMS\${APPNAME}"
 
   # Firewall - remove rules if exists
-  SimpleFC::AdvRemoveRule "Gexp incoming peers (TCP:42786)"
-  SimpleFC::AdvRemoveRule "Gexp outgoing peers (TCP:42786)"
-  SimpleFC::AdvRemoveRule "Gexp UDP discovery (UDP:42786)"
+  SimpleFC::AdvRemoveRule "Gtsf incoming peers (TCP:42786)"
+  SimpleFC::AdvRemoveRule "Gtsf outgoing peers (TCP:42786)"
+  SimpleFC::AdvRemoveRule "Gtsf UDP discovery (UDP:42786)"
 
   # Remove IPC endpoint (https://github.com/teslafunds/EIPs/issues/147)
   ${un.EnvVarUpdate} $0 "ETHEREUM_SOCKET" "R" "HKLM" "\\.\pipe\gtsf.ipc"
