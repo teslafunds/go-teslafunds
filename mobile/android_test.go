@@ -47,7 +47,7 @@ public class AndroidTest extends InstrumentationTestCase {
 
 	public void testAccountManagement() {
 		// Create an encrypted keystore with light crypto parameters.
-		KeyStore ks = new KeyStore(getInstrumentation().getContext().getFilesDir() + "/keystore", Gexp.LightScryptN, Gexp.LightScryptP);
+		KeyStore ks = new KeyStore(getInstrumentation().getContext().getFilesDir() + "/keystore", Gtsf.LightScryptN, Gtsf.LightScryptP);
 
 		try {
 			// Create a new account with the specified encryption passphrase.

@@ -867,8 +867,8 @@ func doXCodeFramework(cmdline []string) {
 	// Prepare and upload a PodSpec to CocoaPods
 	if *deploy != "" {
 		meta := newPodMetadata(env, archive)
-		build.Render("build/pod.podspec", "Gexp.podspec", 0755, meta)
-		build.MustRunCommand("pod", *deploy, "push", "Gexp.podspec", "--allow-warnings", "--verbose")
+		build.Render("build/pod.podspec", "Gtsf.podspec", 0755, meta)
+		build.MustRunCommand("pod", *deploy, "push", "Gtsf.podspec", "--allow-warnings", "--verbose")
 	}
 }
 
