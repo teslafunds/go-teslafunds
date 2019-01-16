@@ -46,7 +46,7 @@ const (
 var (
 	// Git SHA1 commit hash of the release (set via linker flags)
 	gitCommit = ""
-	// Ethereum address of the Gexp release oracle.
+	// Ethereum address of the Gtsf release oracle.
 	relOracle = common.HexToAddress("0x926d69cc3bbf81d52cba6886d788df007a15a3cd")
 	// The app that holds all commands and flags.
 	app = utils.NewApp(gitCommit, "the go-teslafunds command line interface")

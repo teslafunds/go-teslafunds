@@ -20,7 +20,7 @@
 // repository.
 //
 // The contract takes a vote based approach on both assigning authorised signers
-// as well as signing off on new Gexp releases.
+// as well as signing off on new Gtsf releases.
 //
 // Note, when a signer is demoted, the currently pending release is auto-nuked.
 // The reason is to prevent suprises where a demotion actually tilts the votes
@@ -33,7 +33,7 @@ contract ReleaseOracle {
     address[] fail; // List of signers voting to fail a proposal
   }
 
-  // Version is the version details of a particular Gexp release
+  // Version is the version details of a particular Gtsf release
   struct Version {
     uint32  major;  // Major version component of the release
     uint32  minor;  // Minor version component of the release
