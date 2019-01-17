@@ -30,7 +30,7 @@ const (
 	DefaultHTTPHost = "localhost" // Default host interface for the HTTP RPC server
 	DefaultHTTPPort = 4949        // Default TCP port for the HTTP RPC server
 	DefaultWSHost   = "localhost" // Default host interface for the websocket RPC server
-	DefaultWSPort   = 9657       // Default TCP port for the websocket RPC server
+	DefaultWSPort   = 4950       // Default TCP port for the websocket RPC server
 )
 
 // DefaultConfig contains reasonable default settings.
