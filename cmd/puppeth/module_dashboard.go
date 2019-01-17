@@ -82,7 +82,7 @@ var dashboardContent = `
 									{{if .FaucetPage}}<li><a onclick="load('//{{.FaucetPage}}')"><i class="fa fa-bath"></i> Crypto Faucet</a></li>{{end}}
 									<li id="connect"><a><i class="fa fa-plug"></i> Connect Yourself</a>
 										<ul id="connect_list" class="nav child_menu">
-											<li><a onclick="$('#connect').removeClass('active'); $('#connect_list').toggle(); load('#connect-go-ethereum-geth')">Go Teslafunds: Gexp</a></li>
+											<li><a onclick="$('#connect').removeClass('active'); $('#connect_list').toggle(); load('#connect-go-ethereum-geth')">Go Teslafunds: Gtsf</a></li>
 											<li><a onclick="$('#connect').removeClass('active'); $('#connect_list').toggle(); load('#connect-go-ethereum-mist')">Go Teslafunds: Wallet & Mist</a></li>
 											<li><a onclick="$('#connect').removeClass('active'); $('#connect_list').toggle(); load('#connect-go-ethereum-mobile')">Go Teslafunds: Android & iOS</a></li>
 										</ul>
@@ -97,7 +97,7 @@ var dashboardContent = `
 					<div id="connect-go-ethereum-geth" hidden style="padding: 16px;">
 						<div class="page-title">
 							<div class="title_left">
-								<h3>Connect Yourself &ndash; Go Teslafunds: Gexp</h3>
+								<h3>Connect Yourself &ndash; Go Teslafunds: Gtsf</h3>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -287,7 +287,7 @@ node.start();
 										<p>Both stable and develop builds of the iOS framework are available via CocoaPods. Before proceeding, please ensure you have a recent version configured in your iOS project. You can find details in <a href="https://github.com/teslafunds/go-teslafunds/wiki/Mobile:-Introduction#ios-framework" target="about:blank">Mobile: Introduction &ndash; iOS framework</a>.
 										<p>Before connecting to the Teslafunds network, download the <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> genesis json file and either store it in your iOS project as a resource file you can access, or save it as a string in a variable. You're going to need to to initialize your client.</p>
 										<p>Inside your Swift code you can now import the gtsf framework and connect to Teslafunds (ObjC should be analogous):
-											<pre>import Gexp</pre>
+											<pre>import Gtsf</pre>
 <pre>
 var error: NSError?
 
@@ -322,7 +322,7 @@ try! node?.start();
 										<p>Puppeth is a tool to aid you in creating a new Teslafunds network down to the genesis block, bootnodes, signers, ethstats server, crypto faucet, wallet browsers, block explorer, dashboard and more; without the hassle that it would normally entail to manually configure all these services one by one.</p>
 										<p>Puppeth uses ssh to dial in to remote servers, and builds its network components out of docker containers using docker-compose. The user is guided through the process via a command line wizard that does the heavy lifting and topology configuration automatically behind the scenes.</p>
 										<br/>
-										<p>Puppeth is distributed as part of the <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">Gexp &amp; Tools</a> bundles, but can also be installed separately via:<pre>go get github.com/teslafunds/go-teslafunds/cmd/puppeth</pre></p>
+										<p>Puppeth is distributed as part of the <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">Gtsf &amp; Tools</a> bundles, but can also be installed separately via:<pre>go get github.com/teslafunds/go-teslafunds/cmd/puppeth</pre></p>
 										<br/>
 										<p><em>Copyright 2017. The go-ethereum / go-teslafunds Authors.</em></p>
 									</div>

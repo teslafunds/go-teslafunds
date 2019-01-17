@@ -58,7 +58,7 @@ func TestConsoleWelcome(t *testing.T) {
 	gtsf.Expect(`
 Welcome to the gtsf JavaScript console!
 
-instance: Gexp/v{{gtsfver}}/{{goos}}-{{goarch}}/{{gover}}
+instance: Gtsf/v{{gtsfver}}/{{goos}}-{{goarch}}/{{gover}}
 coinbase: {{.Etherbase}}
 at block: 0 ({{niltime}})
  datadir: {{.Datadir}}

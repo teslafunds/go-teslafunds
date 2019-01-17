@@ -15,7 +15,7 @@ PageExEnd
 # Install gtsf binary
 Section "Gtsf" GETH_IDX
   SetOutPath $INSTDIR
-  file {{.Gexp}}
+  file {{.Gtsf}}
 
   # Create start menu launcher
   createDirectory "$SMPROGRAMS\${APPNAME}"

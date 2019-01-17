@@ -37,7 +37,7 @@ import (
 	whisper "github.com/teslafunds/go-teslafunds/whisper/whisperv5"
 )
 
-// NodeConfig represents the collection of configuration values to fine tune the Gexp
+// NodeConfig represents the collection of configuration values to fine tune the Gtsf
 // node embedded into a mobile process. The available values are a subset of the
 // entire API provided by go-ethereum to reduce the maintenance surface and dev
 // complexity.
