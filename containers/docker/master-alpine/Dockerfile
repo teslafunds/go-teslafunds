@@ -9,6 +9,6 @@ RUN \
   rm -rf /go-teslafunds && rm -rf /var/cache/apk/*
 
 EXPOSE 9656
-EXPOSE 42786
+EXPOSE 59995
 
 ENTRYPOINT ["/gtsf"]

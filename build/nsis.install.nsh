@@ -24,14 +24,14 @@ Section "Gtsf" GETH_IDX
   createShortCut "$SMPROGRAMS\${APPNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "" ""
 
   # Firewall - remove rules (if exists)
-  SimpleFC::AdvRemoveRule "Gtsf incoming peers (TCP:42786)"
-  SimpleFC::AdvRemoveRule "Gtsf outgoing peers (TCP:42786)"
-  SimpleFC::AdvRemoveRule "Gtsf UDP discovery (UDP:42786)"
+  SimpleFC::AdvRemoveRule "Gtsf incoming peers (TCP:59995)"
+  SimpleFC::AdvRemoveRule "Gtsf outgoing peers (TCP:59995)"
+  SimpleFC::AdvRemoveRule "Gtsf UDP discovery (UDP:59995)"
 
   # Firewall - add rules
-  SimpleFC::AdvAddRule "Gtsf incoming peers (TCP:42786)" ""  6 1 1 2147483647 1 "$INSTDIR\gtsf.exe" "" "" "Teslafunds" 42786 "" "" ""
-  SimpleFC::AdvAddRule "Gtsf outgoing peers (TCP:42786)" ""  6 2 1 2147483647 1 "$INSTDIR\gtsf.exe" "" "" "Teslafunds" "" 42786 "" ""
-  SimpleFC::AdvAddRule "Gtsf UDP discovery (UDP:42786)" "" 17 2 1 2147483647 1 "$INSTDIR\gtsf.exe" "" "" "Teslafunds" "" 42786 "" ""
+  SimpleFC::AdvAddRule "Gtsf incoming peers (TCP:59995)" ""  6 1 1 2147483647 1 "$INSTDIR\gtsf.exe" "" "" "Teslafunds" 59995 "" "" ""
+  SimpleFC::AdvAddRule "Gtsf outgoing peers (TCP:59995)" ""  6 2 1 2147483647 1 "$INSTDIR\gtsf.exe" "" "" "Teslafunds" "" 59995 "" ""
+  SimpleFC::AdvAddRule "Gtsf UDP discovery (UDP:59995)" "" 17 2 1 2147483647 1 "$INSTDIR\gtsf.exe" "" "" "Teslafunds" "" 59995 "" ""
 
   # Set default IPC endpoint (https://github.com/teslafunds/EIPs/issues/147)
   ${EnvVarUpdate} $0 "ETHEREUM_SOCKET" "R" "HKLM" "\\.\pipe\gtsf.ipc"
