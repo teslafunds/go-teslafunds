@@ -23,7 +23,7 @@ dependencies:
 
 test:
   override:
-    # Build Gexp and move into a known folder
+    # Build Gtsf and move into a known folder
     - make gtsf
     - cp ./build/bin/gtsf $HOME/gtsf
 

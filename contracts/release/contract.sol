@@ -15,7 +15,7 @@
 // along with the go-ethereum / go-teslafunds library. If not, see <http://www.gnu.org/licenses/>.
 
 // ReleaseOracle is an Teslafunds contract to store the current and previous
-// versions of the go-ethereum / go-teslafunds implementation. Its goal is to allow Gexp to
+// versions of the go-ethereum / go-teslafunds implementation. Its goal is to allow Gtsf to
 // check for new releases automatically without the need to consult a central
 // repository.
 //

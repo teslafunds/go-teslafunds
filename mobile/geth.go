@@ -95,7 +95,7 @@ type Node struct {
 	node *node.Node
 }
 
-// NewNode creates and configures a new Gexp node.
+// NewNode creates and configures a new Gtsf node.
 func NewNode(datadir string, config *NodeConfig) (stack *Node, _ error) {
 	// If no or partial configurations were specified, use defaults
 	if config == nil {

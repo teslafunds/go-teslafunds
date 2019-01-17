@@ -201,7 +201,7 @@ func TestAndroid(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	// Generate the mobile bindings for Gexp and add the tester class
+	// Generate the mobile bindings for Gtsf and add the tester class
 	gobind := exec.Command("gomobile", "bind", "-javapkg", "org.teslafunds", "github.com/teslafunds/go-teslafunds/mobile")
 	if output, err := gobind.CombinedOutput(); err != nil {
 		t.Logf("%s", output)

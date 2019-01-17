@@ -112,12 +112,12 @@ var dashboardContent = `
 										<p>An archive node synchronizes the blockchain by downloading the full chain from the genesis block to the current head block, executing all the transactions contained within. As the node crunches through the transactions, all past historical state is stored on disk, and can be queried for each and every block.</p>
 										<p>Initial processing required to execute all transactions may require non-negligible time and disk capacity required to store all past state may be non-insignificant. High end machines with SSD storage, modern CPUs and 8GB+ RAM are recommended.</p>
 										<br/>
-										<p>To run an archive node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gexp with:
+										<p>To run an archive node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gtsf with:
 											<pre>gtsf --datadir=$HOME/.{{.Network}} init {{.GethGenesis}}</pre>
 											<pre>gtsf --networkid={{.NetworkID}} --datadir=$HOME/.{{.Network}} --cache=1024 --syncmode=full{{if .Ethstats}} --ethstats='{{.Ethstats}}'{{end}} --bootnodes={{.BootnodesFullFlat}}</pre>
 										</p>
 										<br/>
-										<p>You can download Gexp from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
+										<p>You can download Gtsf from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
 									</div>
 								</div>
 							</div>
@@ -131,12 +131,12 @@ var dashboardContent = `
 										<p>A full node synchronizes the blockchain by downloading the full chain from the genesis block to the current head block, but does not execute the transactions. Instead, it downloads all the transactions receipts along with the entire recent state. As the node downloads the recent state directly, historical data can only be queried from that block onward.</p>
 										<p>Initial processing required to synchronize is more bandwidth intensive, but is light on the CPU and has significantly reduced disk requirements. Mid range machines with HDD storage, decent CPUs and 4GB+ RAM should be enough.</p>
 										<br/>
-										<p>To run a full node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gexp with:
+										<p>To run a full node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gtsf with:
 											<pre>gtsf --datadir=$HOME/.{{.Network}} init {{.GethGenesis}}</pre>
 											<pre>gtsf --networkid={{.NetworkID}} --datadir=$HOME/.{{.Network}} --cache=512{{if .Ethstats}} --ethstats='{{.Ethstats}}'{{end}} --bootnodes={{.BootnodesFullFlat}}</pre>
 										</p>
 										<br/>
-										<p>You can download Gexp from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
+										<p>You can download Gtsf from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
 									</div>
 								</div>
 							</div>
@@ -153,12 +153,12 @@ var dashboardContent = `
 										<p>A light node synchronizes the blockchain by downloading and verifying only the chain of headers from the genesis block to the current head, without executing any transactions or retrieving any associated state. As no state is available locally, any interaction with the blockchain relies on on-demand data retrievals from remote nodes.</p>
 										<p>Initial processing required to synchronize is light, as it only verifies the validity of the headers; similarly required disk capacity is small, tallying around 500 bytes per header. Low end machines with arbitrary storage, weak CPUs and 512MB+ RAM should cope well.</p>
 										<br/>
-										<p>To run a light node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gexp with:
+										<p>To run a light node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gtsf with:
 											<pre>gtsf --datadir=$HOME/.{{.Network}} --light init {{.GethGenesis}}</pre>
 											<pre>gtsf --networkid={{.NetworkID}} --datadir=$HOME/.{{.Network}} --syncmode=light{{if .Ethstats}} --ethstats='{{.Ethstats}}'{{end}} --bootnodes={{.BootnodesLightFlat}}</pre>
 										</p>
 										<br/>
-										<p>You can download Gexp from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
+										<p>You can download Gtsf from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
 									</div>
 								</div>
 							</div>
@@ -172,12 +172,12 @@ var dashboardContent = `
 										<p>An embedded node is a variation of the light node with configuration parameters tuned towards low memory footprint. As such, it may sacrifice processing and disk IO performance to conserve memory. It should be considered an <strong>experimental</strong> direction for now without hard guarantees or bounds on the resources used.</p>
 										<p>Initial processing required to synchronize is light, as it only verifies the validity of the headers; similarly required disk capacity is small, tallying around 500 bytes per header. Embedded machines with arbitrary storage, low power CPUs and 128MB+ RAM may work.</p>
 										<br/>
-										<p>To run an embedded node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gexp with:
+										<p>To run an embedded node, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and start Gtsf with:
 											<pre>gtsf --datadir=$HOME/.{{.Network}} --light init {{.GethGenesis}}</pre>
 											<pre>gtsf --networkid={{.NetworkID}} --datadir=$HOME/.{{.Network}} --cache=32 --syncmode=light{{if .Ethstats}} --ethstats='{{.Ethstats}}'{{end}} --bootnodes={{.BootnodesLightFlat}}</pre>
 										</p>
 										<br/>
-										<p>You can download Gexp from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
+										<p>You can download Gtsf from <a href="https://gtsf.teslafunds.tech/downloads/" target="about:blank">https://gtsf.teslafunds.tech/downloads/</a>.</p>
 									</div>
 								</div>
 							</div>
@@ -201,7 +201,7 @@ var dashboardContent = `
 										<p>The Teslafunds Wallet is an <a href="https://electron.atom.io/" target="about:blank">Electron</a> based desktop application to manage your Teslafunds accounts and funds. Beside the usual account life-cycle operations you would expect to perform, the wallet also provides a means to send transactions from your accounts and to interact with smart contracts deployed on the network.</p>
 										<p>Under the hood the wallet is backed by a go-teslafunds full node, meaning that a mid range machine is assumed. Similarly, synchronization is based on <strong>fast-sync</strong>, which will download all blockchain data from the network and make it available to the wallet. Light nodes cannot currently fully back the wallet, but it's a target actively pursued.</p>
 										<br/>
-										<p>To connect with the Teslafunds Wallet, you'll need to initialize your private network first via Gexp as the wallet does not currently support calling Gexp directly. To initialize your local chain, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and run:
+										<p>To connect with the Teslafunds Wallet, you'll need to initialize your private network first via Gtsf as the wallet does not currently support calling Gtsf directly. To initialize your local chain, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and run:
 											<pre>gtsf --datadir=$HOME/.{{.Network}} init {{.GethGenesis}}</pre>
 										</p>
 										<p>With your local chain initialized, you can start the Teslafunds Wallet:
@@ -222,7 +222,7 @@ var dashboardContent = `
 										<p>The Mist browser is an <a href="https://electron.atom.io/" target="about:blank">Electron</a> based desktop application to load and interact with Teslafunds enabled third party web DApps. Beside all the functionality provided by the Teslafunds Wallet, Mist is an extended web-browser where loaded pages have access to the Teslafunds network via a web3.js provider, and may also interact with users' own accounts (given proper authorization and confirmation of course).</p>
 										<p>Under the hood the browser is backed by a go-teslafunds	full node, meaning that a mid range machine is assumed. Similarly, synchronization is based on <strong>fast-sync</strong>, which will download all blockchain data from the network and make it available to the wallet. Light nodes cannot currently fully back the wallet, but it's a target actively pursued.</p>
 										<br/>
-										<p>To connect with the Mist browser, you'll need to initialize your private network first via Gexp as Mist does not currently support calling Gexp directly. To initialize your local chain, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and run:
+										<p>To connect with the Mist browser, you'll need to initialize your private network first via Gtsf as Mist does not currently support calling Gtsf directly. To initialize your local chain, download <a href="/{{.GethGenesis}}"><code>{{.GethGenesis}}</code></a> and run:
 											<pre>gtsf --datadir=$HOME/.{{.Network}} init {{.GethGenesis}}</pre>
 										</p>
 										<p>With your local chain initialized, you can start Mist:
