@@ -8,7 +8,7 @@ RUN \
   apk del go git make gcc musl-dev linux-headers && \
   rm -rf /go-teslafunds && rm -rf /var/cache/apk/*
 
-EXPOSE 9656
+EXPOSE 4949
 EXPOSE 59995
 
 ENTRYPOINT ["/gtsf"]

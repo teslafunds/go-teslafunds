@@ -9,7 +9,7 @@ RUN \
   apt-get remove -y golang git make gcc libc-dev && apt autoremove -y && apt-get clean && \
   rm -rf /go-teslafunds
 
-EXPOSE 9656
+EXPOSE 4949
 EXPOSE 59995
 
 ENTRYPOINT ["/gtsf"]
