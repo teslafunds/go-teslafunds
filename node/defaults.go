@@ -42,7 +42,7 @@ var DefaultConfig = Config{
 	WSModules:   []string{"net", "web3"},
 	P2P: p2p.Config{
 		ListenAddr:      ":59995",
-		DiscoveryV5Addr: ":42787",
+		DiscoveryV5Addr: ":59996",
 		MaxPeers:        50,
 		NAT:             nat.Any(),
 	},
