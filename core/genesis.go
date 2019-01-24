@@ -314,7 +314,7 @@ func DefaultGenesisBlock() *Genesis {
 		ExtraData:  hexutil.MustDecode("0x00000000000000000000000000000000"),
 		GasLimit:   5000,
 		Difficulty: big.NewInt(2147483648),
-		Coinbase:   common.HexToAddress("0xbbce77fe164ee1fbb24c0bbd63f7c3b3283d93fb"),
+		Coinbase:   common.HexToAddress("0x4ad372afa90a0d828166eb3bed9552707757a3d0"),
 		Alloc:      decodePrealloc(mainnetAllocData),
 	}
 }
