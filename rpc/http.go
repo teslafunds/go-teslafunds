@@ -20,6 +20,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -147,8 +148,8 @@ func NewHTTPServer(cors []string, srv *Server) *http.Server {
 
 // ServeHTTP serves JSON-RPC requests over HTTP.
 func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if responseCode, errorMessage := httpErrorResponse(r); responseCode != 0 {
-		http.Error(w, errorMessage, responseCode)		
+	if code, err := validateRequest(r); err != nil {
+		http.Error(w, err.Error(), code)	
 		return
 	}
 
@@ -159,6 +160,7 @@ func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// a single request.
 	codec := NewJSONCodec(&httpReadWriteNopCloser{r.Body, w})
 	defer codec.Close()
+	w.Header().Set("content-type", contentType)
 	srv.ServeSingleRequest(codec, OptionMethodInvocation)
 }
 
@@ -166,22 +168,20 @@ func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func httpErrorResponse(r *http.Request) (int, string) {
 	if r.Method == "PUT" || r.Method == "DELETE" {
 		errorMessage := "method not allowed"
-		return http.StatusMethodNotAllowed, errorMessage
+		return http.StatusMethodNotAllowed, errors.New("method not allowed")
 	}
 
 	if r.ContentLength > maxHTTPRequestContentLength {
-		errorMessage := fmt.Sprintf("content length too large (%d>%d)", r.ContentLength, maxHTTPRequestContentLength)
-		return http.StatusRequestEntityTooLarge, errorMessage
+		err := fmt.Errorf("content length too large (%d>%d)", r.ContentLength, maxHTTPRequestContentLength)
+		return http.StatusRequestEntityTooLarge, err
 	}
-
-	ct := r.Header.Get("content-type")
-	mt, _, err := mime.ParseMediaType(ct)
+	mt, _, err := mime.ParseMediaType(r.Header.Get("content-type"))
 	if err != nil || mt != contentType {
-		errorMessage := fmt.Sprintf("invalid content type, only %s is supported", contentType)
-		return http.StatusUnsupportedMediaType, errorMessage
+		err := fmt.Errorf("invalid content type, only %s is supported", contentType)
+		return http.StatusUnsupportedMediaType, err
 	}
 
-	return 0, ""
+	return 0, nil
 }	
 
 func newCorsHandler(srv *Server, allowedOrigins []string) http.Handler {
