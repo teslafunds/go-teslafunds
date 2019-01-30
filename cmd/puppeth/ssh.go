@@ -27,7 +27,7 @@ import (
 	"os/user"
 	"path/filepath"
 	"strings"
-	"syscall"
+
 
 	"github.com/teslafunds/go-teslafunds/log"
 	"golang.org/x/crypto/ssh"
@@ -85,7 +85,7 @@ func dial(server string, pubkey []byte) (*sshClient, error) {
 	}
 	auths = append(auths, ssh.PasswordCallback(func() (string, error) {
 		fmt.Printf("What's the login password for %s at %s? (won't be echoed)\n> ", login, server)
-		blob, err := terminal.ReadPassword(int(syscall.Stdin))
+		blob, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 
 		fmt.Println()
 		return string(blob), err
