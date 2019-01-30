@@ -148,29 +148,31 @@ func NewHTTPServer(cors []string, srv *Server) *http.Server {
 
 // ServeHTTP serves JSON-RPC requests over HTTP.
 func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if code, err := validateRequest(r); err != nil {
-		http.Error(w, err.Error(), code)	
+	// Permit dumb empty requests for remote health-checks (AWS)
+	if r.Method == "GET" && r.ContentLength == 0 && r.URL.RawQuery == "" {
 		return
 	}
-
-	w.Header().Set("content-type", contentType)
-
-	// create a codec that reads direct from the request body until
-	// EOF and writes the response to w and order the server to process
-	// a single request.
+	if code, err := validateRequest(r); err != nil {
+		http.Error(w, err.Error(), code)
+		return
+	}
+	// All checks passed, create a codec that reads direct from the request body
+	// untilEOF and writes the response to w and order the server to process a
+	// single request.
 	codec := NewJSONCodec(&httpReadWriteNopCloser{r.Body, w})
 	defer codec.Close()
+
 	w.Header().Set("content-type", contentType)
 	srv.ServeSingleRequest(codec, OptionMethodInvocation)
 }
 
 // Returns a non-zero response code and error message if the request is invalid.
-func httpErrorResponse(r *http.Request) (int, string) {
+// validateRequest returns a non-zero response code and error message if the
+// request is invalid.
+func validateRequest(r *http.Request) (int, error) {
 	if r.Method == "PUT" || r.Method == "DELETE" {
-		errorMessage := "method not allowed"
 		return http.StatusMethodNotAllowed, errors.New("method not allowed")
 	}
-
 	if r.ContentLength > maxHTTPRequestContentLength {
 		err := fmt.Errorf("content length too large (%d>%d)", r.ContentLength, maxHTTPRequestContentLength)
 		return http.StatusRequestEntityTooLarge, err
@@ -180,9 +182,8 @@ func httpErrorResponse(r *http.Request) (int, string) {
 		err := fmt.Errorf("invalid content type, only %s is supported", contentType)
 		return http.StatusUnsupportedMediaType, err
 	}
-
 	return 0, nil
-}	
+}
 
 func newCorsHandler(srv *Server, allowedOrigins []string) http.Handler {
 	// disable CORS support if user has not specified a custom CORS configuration
