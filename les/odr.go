@@ -26,16 +26,16 @@ import (
 
 // LesOdr implements light.OdrBackend
 type LesOdr struct {
-	db        ethdb.Database
-	stop      chan struct{}
-	retriever *retrieveManager
+	db                                         ethdb.Database
+	stop                                       chan struct{}
+	retriever                                  *retrieveManager
 }
 
 func NewLesOdr(db ethdb.Database, retriever *retrieveManager) *LesOdr {
 	return &LesOdr{
-		db:        db,
-		retriever: retriever,
-		stop:      make(chan struct{}),
+		db:               db,
+		retriever:        retriever,
+		stop:             make(chan struct{}),
 	}
 }
 

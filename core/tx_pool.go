@@ -643,7 +643,7 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 
 		// We've directly injected a replacement transaction, notify subsystems
 		go pool.txFeed.Send(TxPreEvent{tx})
-			
+
 		return old != nil, nil
 	}
 	// New transaction isn't replacing a pending one, push into queue
@@ -805,7 +805,7 @@ func (pool *TxPool) addTxsLocked(txs []*types.Transaction, local bool) error {
 	}
 	// Only reprocess the internal state if something was actually added
 	if len(dirty) > 0 {
-		addrs := make([]common.Address, 0, len(dirty))
+		for addr := range dirty {
 		for addr, _ := range dirty {
 			addrs = append(addrs, addr)
 		}
@@ -872,7 +872,7 @@ func (pool *TxPool) removeTx(hash common.Hash) {
 func (pool *TxPool) promoteExecutables(accounts []common.Address) {
 	// Gather all the accounts potentially needing updates
 	if accounts == nil {
-		accounts = make([]common.Address, 0, len(pool.queue))
+		for addr := range pool.queue {
 		for addr, _ := range pool.queue {
 			accounts = append(accounts, addr)
 		}

@@ -61,17 +61,17 @@ The hashing itself does use extra copies and allocation though, since it does ne
 
 var (
 	errAppendOppNotSuported = errors.New("Append operation not supported")
-	errOperationTimedOut = errors.New("operation timed out")
+	errOperationTimedOut    = errors.New("operation timed out")
 )
 
 type TreeChunker struct {
 	branches int64
 	hashFunc SwarmHasher
 	// calculated
-	hashSize    int64 // self.hashFunc.New().Size()
-	chunkSize   int64 // hashSize* branches
-	workerCount int64 // the number of worker routines used
-	workerLock	sync.RWMutex // lock for the worker count
+	hashSize    int64        // self.hashFunc.New().Size()
+	chunkSize   int64        // hashSize* branches
+	workerCount int64        // the number of worker routines used
+	workerLock  sync.RWMutex // lock for the worker count
 }
 
 func NewTreeChunker(params *ChunkerParams) (self *TreeChunker) {
@@ -172,7 +172,7 @@ func (self *TreeChunker) Split(data io.Reader, size int64, chunkC chan *Chunk, s
 			return nil, err
 		}
 	case <-time.NewTimer(splitTimeout).C:
-		return nil,errOperationTimedOut
+		return nil, errOperationTimedOut
 	}
 
 	return key, nil
