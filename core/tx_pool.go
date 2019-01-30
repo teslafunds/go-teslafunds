@@ -640,6 +640,10 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 		pool.journalTx(from, tx)
 
 		log.Trace("Pooled new executable transaction", "hash", hash, "from", from, "to", tx.To())
+
+		// We've directly injected a replacement transaction, notify subsystems
+		go pool.txFeed.Send(TxPreEvent{tx})
+			
 		return old != nil, nil
 	}
 	// New transaction isn't replacing a pending one, push into queue
