@@ -297,7 +297,7 @@ func accountCreate(ctx *cli.Context) error {
 	ks := stack.AccountManager().Backends(keystore.KeyStoreType)[0].(*keystore.KeyStore)
 	account, err := ks.NewAccount(password)
 	if err != nil {
-		utils.Fatalf("Failed to create account: %v", err)
+		utils.Fatalf("Failed to read configuration: %v", err)
 	}
 	fmt.Printf("Address: {%x}\n", account.Address)
 	return nil
