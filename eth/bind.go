@@ -106,7 +106,7 @@ func toBlockNumber(num *big.Int) rpc.BlockNumber {
 // PendingAccountNonce implements bind.ContractTransactor retrieving the current
 // pending nonce associated with an account.
 func (b *ContractBackend) PendingNonceAt(ctx context.Context, account common.Address) (nonce uint64, err error) {
-	out, err := b.txapi.NextNonce(ctx, account)
+	out, err := b.txapi.GetTransactionCount(ctx, account, rpc.PendingBlockNumber)
 	if out != nil {
 		nonce = uint64(*out)
 	}
