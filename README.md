@@ -6,7 +6,7 @@ The following builds are build automatically by our build servers after each pus
 
 
 * [Ubuntu (https://github.com/teslafunds/go-teslafunds/)
-* [Windows 64-bit](https://github.com/teslafunds/go-teslafunds/releases/download/1.0.1/gtsf-windows-4.0-amd64-1.0.1.zip)
+* [Windows 64-bit](https://github.com/teslafunds/Desktopwallet/releases/download/v0.1.6a/Windows-Teslafunds-0.2.5a.zip)
 * [ARM](https://build.ethdev.com/builds/ARM%20Go%20develop%20branch/gtsf-ARM-latest.tar.bz2)
 
 ## Building the source
