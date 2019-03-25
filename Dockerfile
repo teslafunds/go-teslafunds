@@ -12,5 +12,5 @@ FROM alpine:latest
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /go-teslafunds/build/bin/geth /usr/local/bin/
 
-EXPOSE 4949 4949 59995 59995/udp
+EXPOSE 4949 4949 59997 59997/udp
 ENTRYPOINT ["gtsf"]

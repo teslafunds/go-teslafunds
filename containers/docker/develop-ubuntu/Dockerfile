@@ -10,6 +10,6 @@ RUN \
   rm -rf /go-teslafunds
 
 EXPOSE 4949
-EXPOSE 59995
+EXPOSE 59997
 
 ENTRYPOINT ["/gtsf"]
